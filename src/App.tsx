@@ -1,3 +1,4 @@
+import ConnectForm from './components/ConnectForm';
 import ContactForm from './components/ContactForm';
 import ContactInformation from './components/ContactInformation';
 import ExchangesShowcase from './components/ExchangesShowcase';
@@ -14,6 +15,7 @@ const App = () => {
         <nav className="nav">
           <a href="#home">Home</a>
           <a href="#exchanges">Exchanges</a>
+          <a href="#connect">Connect</a>
           <a href="#contact">Contact</a>
         </nav>
       </header>
@@ -61,6 +63,12 @@ const App = () => {
           <p className="section-intro">Trade on top exchanges through a single secure interface where API keys stay encrypted and under your control</p>
           <ExchangesShowcase />
         </section>
+
+        <section id="connect" className="connect-section">
+          <h2 className="section-title gradient-text">Exchange Connection</h2>
+          <p className="section-intro">Link exchange accounts with read and trade permissions to enable automated strategies</p>
+          <ConnectForm />
+        </section>
       </main>
 
       <footer className="footer">
@@ -69,6 +77,7 @@ const App = () => {
           <div className="footer-links">
             <a href="#home">Home</a>
             <a href="#exchanges">Exchanges</a>
+            <a href="#connect">Connect</a>
             <a href="#contact">Contact</a>
           </div>
         </div>
