@@ -17,6 +17,7 @@ const App = () => {
           <a href="#exchanges">Exchanges</a>
           <a href="#connect">Connect</a>
           <a href="#contact">Contact</a>
+          <a href="#about">About</a>
         </nav>
       </header>
 
@@ -69,6 +70,40 @@ const App = () => {
           <p className="section-intro">Link exchange accounts with read and trade permissions to enable automated strategies</p>
           <ConnectForm />
         </section>
+
+        <section id="about" className="about-section">
+          <h2 className="section-title gradient-text">About Us</h2>
+          <p className="section-intro">
+            Cryptomatrix is a collective of quants, engineers, and market makers building autonomous strategies that
+            outpace the market without sacrificing security.
+          </p>
+          <div className="about-grid">
+            <div className="card about-card">
+              <h3>We build with conviction</h3>
+              <p>
+                Our trading stack blends advanced signal engines with real-time risk controls, letting us deploy
+                institutional-grade strategies across every major exchange.
+              </p>
+            </div>
+            <div className="card about-card">
+              <h3>We scale together</h3>
+              <p>
+                From hacker house prototypes to fully automated trading desks, we turn ideas into products alongside
+                partners who want to move fast and win bigger.
+              </p>
+            </div>
+            <div className="card about-card">
+              <h3>We’re looking for co-creators</h3>
+              <p>
+                If you thrive on shipping, obsess over markets, and want to shape the next wave of crypto automation,
+                we want you on the team.
+              </p>
+            </div>
+          </div>
+          <a className="cta-button about-cta" href="#contact">
+            Join the Mission
+          </a>
+        </section>
       </main>
 
       <footer className="footer">
@@ -79,6 +114,7 @@ const App = () => {
             <a href="#exchanges">Exchanges</a>
             <a href="#connect">Connect</a>
             <a href="#contact">Contact</a>
+            <a href="#about">About</a>
           </div>
         </div>
       </footer>

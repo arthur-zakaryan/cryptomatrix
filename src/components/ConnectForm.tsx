@@ -55,7 +55,7 @@ const ConnectForm = () => {
           />
         </div>
         <button className="cta-button" type="submit">
-          Connect
+          Secure Connect
         </button>
         {submitted && <p className="form-confirmation">Credentials received. We will guide you through the secure setup.</p>}
       </form>
