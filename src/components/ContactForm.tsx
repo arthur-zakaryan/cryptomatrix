@@ -34,7 +34,7 @@ const ContactForm = () => {
   return (
     <div className="card contact-form-card">
       <h3>Send us a Message</h3>
-      <p className="card-intro">Fill out the form and our team will get back to you shortly.</p>
+      <p className="card-intro">Fill out the form and our team will get back to you shortly</p>
       <form onSubmit={handleSubmit} className="contact-form">
         <div className="form-grid">
           <div className="form-field">
