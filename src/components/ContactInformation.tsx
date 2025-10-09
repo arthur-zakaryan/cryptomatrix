@@ -1,7 +1,7 @@
 const ContactInformation = () => (
   <div className="card contact-info-card">
     <h3>Contact Information</h3>
-    <p className="card-intro">Connect with us any time. Our desk monitors markets 24/7.</p>
+    <p className="card-intro">Connect with us any time. Our desk monitors markets 24/7</p>
     <div className="info-list">
       <div className="info-item">
         <h4>Phone</h4>
@@ -20,7 +20,7 @@ const ContactInformation = () => (
       <div className="info-item">
         <h4>Hours</h4>
         <p className="info-subtitle">24/7</p>
-        <p>Markets never sleep and neither do we.</p>
+        <p>Markets never sleep and neither do we</p>
       </div>
     </div>
   </div>

@@ -8,8 +8,8 @@ const App = () => {
     <div className="app">
       <header className="app-header" id="home">
         <div className="brand">
-          <span className="brand-mark">Cryptomatrix</span>
-          <p className="brand-tagline">Automated trading that works while you sleep.</p>
+          <span className="brand-mark">cryptomatrix.ai</span>
+          <p className="brand-tagline">Automated trading that works while you sleep</p>
         </div>
         <nav className="nav">
           <a href="#home">Home</a>
@@ -43,9 +43,7 @@ const App = () => {
 
         <section id="contact" className="contact-section">
           <h2 className="section-title gradient-text">Contact</h2>
-          <p className="section-intro">
-            Reach out and our specialists will help you integrate Cryptomatrix with your preferred exchanges.
-          </p>
+          <p className="section-intro">Reach out and our specialists will help you integrate Cryptomatrix with your preferred exchanges</p>
           <div className="contact-grid">
             <ContactForm />
             <ContactInformation />
@@ -54,9 +52,7 @@ const App = () => {
 
         <section id="exchanges" className="exchanges-section">
           <h2 className="section-title gradient-text">Supported Exchanges</h2>
-          <p className="section-intro">
-            Trade on top exchanges through a single secure interface. API keys stay encrypted and under your control.
-          </p>
+          <p className="section-intro">Trade on top exchanges through a single secure interface where API keys stay encrypted and under your control</p>
           <ExchangesShowcase />
         </section>
       </main>

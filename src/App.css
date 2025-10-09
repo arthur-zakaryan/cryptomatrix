@@ -33,7 +33,6 @@
   font-size: clamp(1.6rem, 2.5vw, 2rem);
   font-weight: 700;
   letter-spacing: 0.08em;
-  text-transform: uppercase;
   display: inline-block;
   background: linear-gradient(135deg, #9153c3, #7132f5);
   -webkit-background-clip: text;
@@ -282,10 +281,39 @@
   color: #cdb4ff;
 }
 
-.exchanges-grid {
-  display: grid;
-  gap: 1.75rem;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+.exchanges-carousel {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.exchanges-track {
+  display: flex;
+  gap: 1.5rem;
+  overflow-x: auto;
+  padding: 0.5rem 0.25rem;
+  margin: 0 -0.25rem;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(145, 83, 195, 0.6) transparent;
+}
+
+.exchanges-track::-webkit-scrollbar {
+  height: 6px;
+}
+
+.exchanges-track::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.exchanges-track::-webkit-scrollbar-thumb {
+  background: rgba(145, 83, 195, 0.6);
+  border-radius: 999px;
+}
+
+.exchange-card {
+  flex: 0 0 clamp(240px, 26vw, 320px);
+  scroll-snap-align: start;
 }
 
 .exchange-card h3 {
@@ -295,6 +323,33 @@
 .exchange-card p {
   margin: 0;
   color: rgba(212, 200, 255, 0.7);
+}
+
+.carousel-control {
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  border: 1px solid rgba(145, 83, 195, 0.5);
+  background: rgba(145, 83, 195, 0.18);
+  color: #f6f3ff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.35rem;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.carousel-control:hover,
+.carousel-control:focus {
+  background: rgba(145, 83, 195, 0.35);
+  transform: translateY(-1px);
+}
+
+.carousel-control:disabled {
+  opacity: 0.35;
+  cursor: default;
+  transform: none;
 }
 
 .footer {
@@ -350,5 +405,19 @@
   .footer-links {
     flex-wrap: wrap;
     justify-content: center;
+  }
+
+  .exchanges-carousel {
+    gap: 0.5rem;
+  }
+
+  .carousel-control {
+    width: 2.25rem;
+    height: 2.25rem;
+    font-size: 1.1rem;
+  }
+
+  .exchange-card {
+    flex: 0 0 clamp(220px, 70vw, 280px);
   }
 }
