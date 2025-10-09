@@ -71,6 +71,7 @@
   align-items: center;
   padding: clamp(3rem, 6vw, 6rem) clamp(1.5rem, 4vw, 4rem);
   gap: 3rem;
+  scroll-margin-top: 6rem;
 }
 
 .hero-content h1 {
@@ -112,50 +113,90 @@
 .hero-visual {
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
 .orbital {
-  width: min(320px, 50vw);
-  aspect-ratio: 1;
   position: relative;
+  width: clamp(200px, 30vw, 320px);
+  aspect-ratio: 1;
   border-radius: 50%;
-  background: radial-gradient(circle at 30% 30%, rgba(145, 83, 195, 0.4), rgba(0, 0, 0, 0.1));
-  animation: pulse 6s ease-in-out infinite;
+  background: radial-gradient(circle at 30% 30%, rgba(145, 83, 195, 0.25), rgba(20, 10, 38, 0.5) 65%, transparent 75%);
+  box-shadow: 0 25px 60px rgba(18, 12, 42, 0.45);
+  overflow: visible;
+}
+
+.orbital::after {
+  content: '';
+  position: absolute;
+  inset: 12%;
+  border-radius: 50%;
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.08), rgba(145, 83, 195, 0.12));
+  filter: blur(6px);
+  z-index: 0;
 }
 
 .orbital-ring {
   position: absolute;
-  inset: 12%;
+  inset: 0;
+  margin: auto;
   border-radius: 50%;
-  border: 1px solid rgba(145, 83, 195, 0.4);
-  animation: spin 14s linear infinite;
+  border: 1px solid rgba(209, 189, 255, 0.18);
+  animation: orbit-spin 18s linear infinite;
 }
 
-.ring-two {
-  inset: 24%;
-  animation-duration: 20s;
-  border-style: dashed;
+.orbital-ring--one {
+  width: 78%;
+  height: 78%;
+  animation-duration: 16s;
 }
 
-.ring-three {
-  inset: 36%;
-  animation-duration: 26s;
-  border-style: dotted;
+.orbital-ring--two {
+  width: 60%;
+  height: 60%;
+  animation-duration: 10s;
+  animation-direction: reverse;
 }
 
-@keyframes pulse {
-  0%,
-  100% {
-    transform: scale(0.96);
-    opacity: 0.8;
+.orbital-ring--three {
+  width: 92%;
+  height: 92%;
+  border-color: rgba(113, 50, 245, 0.25);
+  animation-duration: 24s;
+}
+
+.orbital-planet {
+  position: absolute;
+  top: -5%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 16%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ffffff 0%, rgba(228, 208, 255, 0.85) 45%, rgba(113, 50, 245, 0.95) 100%);
+  box-shadow: 0 0 18px rgba(113, 50, 245, 0.6);
+}
+
+.orbital-ring--two .orbital-planet {
+  width: 13%;
+  top: auto;
+  bottom: -8%;
+  transform: translate(-50%, 50%);
+  box-shadow: 0 0 14px rgba(145, 83, 195, 0.55);
+}
+
+.orbital-ring--three .orbital-planet {
+  width: 11%;
+  top: 50%;
+  left: 100%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 12px rgba(113, 50, 245, 0.55);
+}
+
+@keyframes orbit-spin {
+  from {
+    transform: rotate(0deg);
   }
-  50% {
-    transform: scale(1.04);
-    opacity: 1;
-  }
-}
-
-@keyframes spin {
   to {
     transform: rotate(360deg);
   }
@@ -177,6 +218,10 @@
 .contact-section,
 .exchanges-section {
   padding: clamp(3.5rem, 7vw, 6rem) clamp(1.5rem, 4vw, 4rem);
+}
+
+.contact-section {
+  scroll-margin-top: 6rem;
 }
 
 .contact-grid {

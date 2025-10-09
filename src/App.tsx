@@ -6,7 +6,7 @@ import './App.css';
 const App = () => {
   return (
     <div className="app">
-      <header className="app-header" id="home">
+      <header className="app-header">
         <div className="brand">
           <span className="brand-mark">cryptomatrix.ai</span>
           <p className="brand-tagline">Automated trading that works while you sleep</p>
@@ -19,7 +19,7 @@ const App = () => {
       </header>
 
       <main>
-        <section className="hero">
+        <section className="hero" id="home">
           <div className="hero-content">
             <h1>
               Intelligent <span className="gradient-text">crypto trading</span> for modern investors
@@ -33,10 +33,16 @@ const App = () => {
             </a>
           </div>
           <div className="hero-visual">
-            <div className="orbital">
-              <div className="orbital-ring ring-one" />
-              <div className="orbital-ring ring-two" />
-              <div className="orbital-ring ring-three" />
+            <div className="orbital" aria-hidden="true">
+              <div className="orbital-ring orbital-ring--one">
+                <span className="orbital-planet" />
+              </div>
+              <div className="orbital-ring orbital-ring--two">
+                <span className="orbital-planet" />
+              </div>
+              <div className="orbital-ring orbital-ring--three">
+                <span className="orbital-planet" />
+              </div>
             </div>
           </div>
         </section>
