@@ -62,6 +62,7 @@
   align-items: flex-start;
   gap: 0.1rem;
   justify-content: center;
+  transition: transform 0.3s ease, color 0.3s ease, text-shadow 0.3s ease;
 }
 
 .brand-logo {
@@ -69,6 +70,17 @@
   height: 100%;
   display: block;
   background: url('./assets/cryptomatrix-logo.svg') no-repeat center / contain;
+  transition: transform 0.3s ease;
+}
+
+.brand-logo-wrapper:hover .brand-logo,
+.brand-logo-wrapper:focus-within .brand-logo {
+  animation: brand-logo-pulse 1.4s ease-in-out infinite;
+}
+
+.brand-logo-wrapper:hover,
+.brand-logo-wrapper:focus-within {
+  box-shadow: 0 16px 32px rgba(113, 50, 245, 0.4), 0 0 22px rgba(122, 92, 255, 0.45);
 }
 
 .brand-button:focus-visible {
@@ -86,6 +98,7 @@
   background: linear-gradient(135deg, #9153c3, #7132f5);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  transition: text-shadow 0.3s ease;
 }
 
 .brand-tagline {
@@ -93,6 +106,32 @@
   font-size: 0.95rem;
   color: rgba(212, 200, 255, 0.7);
   line-height: 1.2;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.brand-button:hover .brand-text,
+.brand-button:focus .brand-text {
+  transform: translateY(-2px);
+}
+
+.brand-button:hover .brand-mark,
+.brand-button:focus .brand-mark {
+  text-shadow: 0 0 18px rgba(173, 121, 244, 0.7);
+}
+
+.brand-button:hover .brand-tagline,
+.brand-button:focus .brand-tagline {
+  color: rgba(244, 234, 255, 0.9);
+  text-shadow: 0 0 16px rgba(113, 50, 245, 0.55);
+}
+
+@keyframes brand-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 .nav {
@@ -142,6 +181,51 @@
 .hero-content {
   grid-area: content;
   justify-self: stretch;
+  position: relative;
+  padding-top: clamp(0, 2.2vw, 1.5rem);
+}
+
+.brand-marquee {
+  display: block;
+  overflow: hidden;
+  border-radius: 999px;
+  border: 1px solid rgba(145, 83, 195, 0.35);
+  background: rgba(18, 12, 42, 0.55);
+  mask: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.95) 15%, rgba(0, 0, 0, 0.95) 85%, transparent 100%);
+  -webkit-mask: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.95) 15%, rgba(0, 0, 0, 0.95) 85%, transparent 100%);
+  margin-bottom: 0.6rem;
+  position: absolute;
+  top: -7rem;
+  left: 0;
+  right: 0;
+}
+
+.brand-marquee-track {
+  display: inline-flex;
+  align-items: center;
+  gap: clamp(3rem, 8vw, 6rem);
+  padding: 0.4rem clamp(1.5rem, 5vw, 3rem);
+  animation: brand-marquee 18s linear infinite;
+  white-space: nowrap;
+}
+
+.brand-marquee-text {
+  font-size: 0.85rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(212, 200, 255, 0.75);
+  transition: color 0.2s ease, text-shadow 0.2s ease;
+}
+
+.brand-marquee:hover .brand-marquee-track,
+.brand-marquee:focus-within .brand-marquee-track {
+  animation-play-state: paused;
+}
+
+.brand-marquee:hover .brand-marquee-text,
+.brand-marquee:focus-within .brand-marquee-text {
+  color: #f6f3ff;
+  text-shadow: 0 0 12px rgba(173, 121, 244, 0.65);
 }
 
 .hero-content h1 {
@@ -545,6 +629,16 @@
   }
   to {
     transform: translateX(-50%);
+  }
+}
+
+@keyframes footer-credit-pulse {
+  0%,
+  100% {
+    text-shadow: 0 0 10px rgba(113, 50, 245, 0.3);
+  }
+  50% {
+    text-shadow: 0 0 22px rgba(173, 121, 244, 0.75);
   }
 }
 
@@ -1180,6 +1274,8 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+  outline: none;
 }
 
 .footer-legal-item h4 {
@@ -1207,9 +1303,285 @@
   text-decoration: underline;
 }
 
+.footer-legal-item:focus-visible {
+  outline: 2px solid rgba(173, 121, 244, 0.55);
+  outline-offset: 4px;
+}
+
+.footer-legal-item:is(:hover, :focus-visible, :focus-within) {
+  background: rgba(30, 18, 60, 0.7);
+  border-color: rgba(173, 121, 244, 0.55);
+  box-shadow: 0 24px 55px rgba(18, 12, 42, 0.48), inset 0 0 16px rgba(113, 50, 245, 0.16);
+  transform: translateY(-4px);
+}
+
 .footer-bottom {
   text-align: center;
   color: rgba(212, 200, 255, 0.6);
+}
+
+.footer-credit {
+  margin: 0;
+  display: inline-block;
+  color: inherit;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+  cursor: default;
+}
+
+.footer-credit:hover,
+.footer-credit:focus {
+  color: rgba(244, 234, 255, 0.9);
+  text-shadow: 0 0 12px rgba(173, 121, 244, 0.65);
+  animation: footer-credit-pulse 1.2s ease-in-out infinite;
+}
+
+.privacy-page {
+  min-height: 100vh;
+  background: radial-gradient(circle at 20% -10%, rgba(122, 92, 255, 0.18), rgba(8, 7, 16, 0.94));
+  color: #d4c8ff;
+  padding: clamp(2.5rem, 5vw, 4.5rem) clamp(1.75rem, 6vw, 6rem);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2rem, 5vw, 3rem);
+}
+
+.privacy-hero {
+  max-width: min(960px, 100%);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.privacy-back {
+  align-self: flex-start;
+  border: 1px solid rgba(173, 121, 244, 0.45);
+  background: rgba(20, 12, 45, 0.55);
+  color: rgba(244, 234, 255, 0.88);
+  padding: 0.45rem 1.1rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.privacy-back:hover,
+.privacy-back:focus {
+  transform: translateY(-1px);
+  border-color: rgba(203, 168, 255, 0.65);
+  box-shadow: 0 12px 24px rgba(18, 12, 42, 0.45);
+  outline: none;
+}
+
+.privacy-eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.85rem;
+  color: rgba(212, 200, 255, 0.65);
+}
+
+.privacy-hero h1 {
+  margin: 0;
+  font-size: clamp(2.6rem, 5vw, 3.3rem);
+  line-height: 1.08;
+  color: #f6f3ff;
+}
+
+.privacy-hero p {
+  margin: 0;
+  font-size: 1.05rem;
+  color: rgba(212, 200, 255, 0.78);
+  max-width: 720px;
+  line-height: 1.65;
+}
+
+.privacy-content {
+  max-width: min(960px, 100%);
+  margin: 0 auto;
+  display: grid;
+  gap: clamp(1.75rem, 4vw, 2.5rem);
+}
+
+.privacy-section {
+  background: rgba(15, 10, 29, 0.68);
+  border: 1px solid rgba(145, 83, 195, 0.3);
+  border-radius: 18px;
+  padding: clamp(1.6rem, 4vw, 2.35rem);
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  box-shadow: 0 16px 40px rgba(15, 10, 29, 0.45);
+  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+  outline: none;
+}
+
+.privacy-section h2 {
+  margin: 0;
+  font-size: 1.35rem;
+  color: #f4eaff;
+}
+
+.privacy-section p {
+  margin: 0;
+  color: rgba(212, 200, 255, 0.78);
+  line-height: 1.65;
+}
+
+.privacy-section ul {
+  margin: 0;
+  padding-left: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  color: rgba(212, 200, 255, 0.74);
+}
+
+.privacy-section li {
+  line-height: 1.6;
+}
+
+.privacy-section:focus-visible {
+  outline: 2px solid rgba(173, 121, 244, 0.55);
+  outline-offset: 6px;
+}
+
+.privacy-section:is(:hover, :focus-visible, :focus-within) {
+  background: rgba(30, 18, 60, 0.75);
+  border-color: rgba(173, 121, 244, 0.55);
+  box-shadow: 0 26px 60px rgba(18, 12, 42, 0.5), inset 0 0 20px rgba(113, 50, 245, 0.18);
+  transform: translateY(-4px);
+}
+
+.privacy-commitments {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.privacy-commitment {
+  background: rgba(18, 12, 42, 0.6);
+  border: 1px solid rgba(173, 121, 244, 0.3);
+  border-radius: 16px;
+  padding: 1.2rem 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  box-shadow: 0 12px 32px rgba(18, 12, 42, 0.42);
+  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+  outline: none;
+}
+
+.privacy-commitment h3 {
+  margin: 0;
+  font-size: 1.05rem;
+  color: #f6f3ff;
+}
+
+.privacy-commitment p {
+  margin: 0;
+  color: rgba(212, 200, 255, 0.74);
+  line-height: 1.6;
+}
+
+.privacy-commitment:focus-visible {
+  outline: 2px solid rgba(173, 121, 244, 0.55);
+  outline-offset: 4px;
+}
+
+.privacy-commitment:is(:hover, :focus-visible, :focus-within) {
+  background: rgba(35, 22, 72, 0.78);
+  border-color: rgba(203, 168, 255, 0.6);
+  box-shadow: 0 22px 50px rgba(18, 12, 42, 0.5), inset 0 0 18px rgba(173, 121, 244, 0.22);
+  transform: translateY(-4px);
+}
+
+.privacy-footer {
+  max-width: min(960px, 100%);
+  margin: 0 auto;
+  padding-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  border-top: 1px solid rgba(145, 83, 195, 0.28);
+}
+
+.privacy-contact h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #f6f3ff;
+}
+
+.privacy-contact p {
+  margin: 0;
+  color: rgba(212, 200, 255, 0.72);
+  line-height: 1.6;
+}
+
+.privacy-email {
+  margin-top: 0.6rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: #cdb4ff;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.privacy-email:hover,
+.privacy-email:focus {
+  color: #f6f3ff;
+  transform: translateY(-1px);
+}
+
+.privacy-return {
+  align-self: flex-start;
+  border: 1px solid rgba(173, 121, 244, 0.4);
+  background: linear-gradient(135deg, rgba(145, 83, 195, 0.9), rgba(113, 50, 245, 0.85));
+  color: #fff;
+  padding: 0.65rem 1.4rem;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.privacy-return:hover,
+.privacy-return:focus {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 34px rgba(113, 50, 245, 0.5);
+  outline: none;
+}
+
+.privacy-return:active {
+  transform: translateY(0);
+  box-shadow: 0 8px 18px rgba(113, 50, 245, 0.4);
+}
+
+.privacy-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+}
+
+.privacy-secondary {
+  border: 1px solid rgba(173, 121, 244, 0.4);
+  background: transparent;
+  color: #cdb4ff;
+  padding: 0.65rem 1.2rem;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.privacy-secondary:hover,
+.privacy-secondary:focus {
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 26px rgba(113, 50, 245, 0.45);
+  outline: none;
 }
 
 @media (min-width: 840px) {
@@ -1223,6 +1595,27 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 1.5rem;
+  }
+
+  .privacy-page {
+    padding: 2.25rem 1.35rem;
+    gap: 2rem;
+  }
+
+  .privacy-hero {
+    gap: 1rem;
+  }
+
+  .privacy-hero h1 {
+    font-size: 2.4rem;
+  }
+
+  .privacy-section {
+    padding: 1.4rem 1.35rem;
+  }
+
+  .privacy-actions {
+    flex-direction: column;
   }
 
   .nav {
@@ -1275,5 +1668,17 @@
 
   .exchange-card {
     flex: 0 0 clamp(220px, 70vw, 280px);
+  }
+}
+@keyframes brand-logo-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.07);
+  }
+  60% {
+    transform: scale(0.96);
   }
 }

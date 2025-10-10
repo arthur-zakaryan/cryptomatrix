@@ -4,6 +4,8 @@ import ContactForm from './components/ContactForm';
 import ContactInformation from './components/ContactInformation';
 import ExchangesShowcase from './components/ExchangesShowcase';
 import AlgorithmsShowcase from './components/AlgorithmsShowcase';
+import PrivacyPolicy from './components/PrivacyPolicy';
+import TermsOfUse from './components/TermsOfUse';
 import './App.css';
 
 const LinkedInIcon = () => (
@@ -171,7 +173,10 @@ const marqueeCoins = [
   'POPCAT'
 ];
 
+const brandMarqueeMessage = 'cryptomatrix.ai — a company of Cali Group Conglomerate';
+
 const App = () => {
+  const [route, setRoute] = useState(window.location.pathname || '/');
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [newsletterSubmitted, setNewsletterSubmitted] = useState(false);
   const [activeCustomers, setActiveCustomers] = useState(12000);
@@ -180,6 +185,36 @@ const App = () => {
     'Where everything is explained, nothing is remembered',
     'Curious... The mind follows what it can’t see'
   ];
+
+  useEffect(() => {
+    const handlePopstate = () => {
+      setRoute(window.location.pathname || '/');
+    };
+
+    window.addEventListener('popstate', handlePopstate);
+    return () => window.removeEventListener('popstate', handlePopstate);
+  }, []);
+
+  useEffect(() => {
+    if (route === '/privacy') {
+      document.title = 'Privacy Policy | Cryptomatrix';
+    } else if (route === '/terms') {
+      document.title = 'Terms of Use | Cryptomatrix';
+    } else {
+      document.title = 'Cryptomatrix';
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [route]);
+
+  const navigateTo = (path: string) => {
+    if (path === route) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    window.history.pushState({}, '', path);
+    setRoute(path);
+  };
 
   const handleNewsletterSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -230,6 +265,24 @@ const App = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const handlePrivacyNavigation = (event: MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    navigateTo('/privacy');
+  };
+
+  const handleTermsNavigation = (event: MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    navigateTo('/terms');
+  };
+
+  if (route === '/privacy') {
+    return <PrivacyPolicy onNavigateHome={() => navigateTo('/')} onNavigateToTerms={() => navigateTo('/terms')} />;
+  }
+
+  if (route === '/terms') {
+    return <TermsOfUse onNavigateHome={() => navigateTo('/')} onNavigateToPrivacy={() => navigateTo('/privacy')} />;
+  }
+
   return (
     <div className="app">
       <header className="app-header">
@@ -265,6 +318,15 @@ const App = () => {
       <main>
         <section className="hero" id="home">
           <div className="hero-content">
+            <div className="brand-marquee" aria-label="Cryptomatrix parent company banner">
+              <div className="brand-marquee-track">
+                {Array.from({ length: 4 }).map((_, index) => (
+                  <span key={`brand-marquee-${index}`} className="brand-marquee-text">
+                    {brandMarqueeMessage}
+                  </span>
+                ))}
+              </div>
+            </div>
             <h1>
               Intelligent <span className="gradient-text">crypto trading</span> for modern investors
             </h1>
@@ -466,20 +528,26 @@ const App = () => {
               <h4>Privacy Policy</h4>
               <p>
                 We encrypt every API credential, restrict data retention, and only monitor markets on your behalf.{' '}
-                <a href="/privacy">Review our data practices</a>.
+                <a href="/privacy" onClick={handlePrivacyNavigation}>
+                  Review our data practices
+                </a>
+                .
               </p>
             </div>
             <div className="footer-legal-item">
               <h4>Terms of Use</h4>
               <p>
                 Trading automation is provided for professional operators. Know your jurisdiction, manage risk, and confirm exchange compliance.{' '}
-                <a href="/terms">See full terms</a>.
+                <a href="/terms" onClick={handleTermsNavigation}>
+                  See full terms
+                </a>
+                .
               </p>
             </div>
           </div>
 
           <div className="footer-bottom">
-            <p>© {new Date().getFullYear()} Cryptomatrix. All rights reserved.</p>
+            <p className="footer-credit">© {new Date().getFullYear()} Cryptomatrix. All rights reserved. Proudly made by Cali Group Conglomerate.</p>
           </div>
         </div>
       </footer>
