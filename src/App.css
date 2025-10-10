@@ -283,6 +283,7 @@
   box-shadow: 0 25px 60px rgba(18, 12, 42, 0.45);
   overflow: visible;
   transition: transform 0.45s ease, box-shadow 0.45s ease, background 0.45s ease;
+  transform-origin: center;
 }
 
 .orbital::after {
@@ -382,18 +383,18 @@
   max-width: 18rem;
 }
 
-.orbital:hover {
+.orbital:is(:hover, :focus-within) {
   background: radial-gradient(circle at 30% 30%, rgba(145, 83, 195, 0.35), rgba(30, 16, 55, 0.65) 65%, transparent 75%);
   box-shadow: 0 35px 90px rgba(18, 12, 42, 0.55);
-  transform: translateY(-6px) scale(1.02);
+  animation: orbital-pulse 1.6s ease-in-out infinite;
 }
 
-.orbital:hover .orbital-ring {
+.orbital:is(:hover, :focus-within) .orbital-ring {
   border-color: rgba(209, 189, 255, 0.4);
   box-shadow: 0 0 22px rgba(113, 50, 245, 0.35);
 }
 
-.orbital:hover .orbital-planet {
+.orbital:is(:hover, :focus-within) .orbital-planet {
   box-shadow: 0 0 26px rgba(145, 83, 195, 0.75);
 }
 
@@ -504,6 +505,19 @@
   }
   to {
     transform: rotate(360deg);
+  }
+}
+
+@keyframes orbital-pulse {
+  0%,
+  100% {
+    transform: translateY(-6px) scale(1.02);
+  }
+  40% {
+    transform: translateY(-6px) scale(1.07);
+  }
+  60% {
+    transform: translateY(-6px) scale(0.98);
   }
 }
 
