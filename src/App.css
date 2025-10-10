@@ -1007,6 +1007,43 @@
   box-shadow: 0 0 0 3px rgba(145, 83, 195, 0.18);
 }
 
+.input-with-toggle {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-with-toggle input {
+  flex: 1;
+  padding-right: 2.75rem;
+}
+
+.visibility-toggle {
+  position: absolute;
+  right: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.9rem;
+  height: 1.9rem;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: rgba(244, 234, 255, 0.75);
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.visibility-toggle:hover {
+  color: rgba(244, 234, 255, 1);
+}
+
+.visibility-toggle:focus-visible {
+  color: rgba(244, 234, 255, 1);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(145, 83, 195, 0.35);
+}
+
 .form-confirmation {
   margin: 0;
   font-size: 0.95rem;
