@@ -296,7 +296,7 @@ const App = () => {
           <div className="orbital-marquee" aria-label="Top cryptocurrencies and memecoins">
             <div className="orbital-marquee-track">
               {marqueeCoins.concat(marqueeCoins).map((coin, index) => (
-                <span key={`orbital-coin-${index}`} className="orbital-marquee-coin">
+                <span key={`orbital-coin-${index}`} className="orbital-marquee-coin" tabIndex={0}>
                   {coin}
                 </span>
               ))}
@@ -346,7 +346,7 @@ const App = () => {
               <li>Concierge onboarding to map bots to your liquidity footprint</li>
             </ul>
             <a className="cta-button pricing-cta" href="#contact">
-              Dive Into The Matrix
+              Dive Into The Crypto Matrix
             </a>
             <p className="pricing-guarantee">No lock-in. If we do not earn multiples on $99 in your first cycle, cancel instantly.</p>
           </div>
@@ -361,7 +361,7 @@ const App = () => {
           <div className="about-marquee" aria-label="Cryptomatrix guiding principles">
             <div className="about-marquee-track">
               {aboutMantra.concat(aboutMantra).map((phrase, index) => (
-                <span key={`mantra-${index}`} className="about-marquee-phrase">
+                <span key={`mantra-${index}`} className="about-marquee-phrase" tabIndex={0}>
                   “{phrase}”
                 </span>
               ))}
