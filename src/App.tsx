@@ -1,3 +1,4 @@
+import { FormEvent, useState } from 'react';
 import ConnectForm from './components/ConnectForm';
 import ContactForm from './components/ContactForm';
 import ContactInformation from './components/ContactInformation';
@@ -5,7 +6,86 @@ import ExchangesShowcase from './components/ExchangesShowcase';
 import AlgorithmsShowcase from './components/AlgorithmsShowcase';
 import './App.css';
 
+const LinkedInIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+    <rect x="3.25" y="3.25" width="17.5" height="17.5" rx="3" fill="none" stroke="currentColor" strokeWidth="1.5" />
+    <circle cx="8" cy="8.2" r="1.6" fill="currentColor" />
+    <path d="M6.9 10.9h2.2v8.1H6.9z" fill="currentColor" />
+    <path
+      d="M11.4 10.9h2.1v1.2h.05c.42-.82 1.34-1.37 2.4-1.37 2.38 0 3 1.58 3 3.82v4.35h-2.2v-3.84c0-1.05-.02-2.39-1.45-2.39-1.45 0-1.67 1.13-1.67 2.31v3.92h-2.23z"
+      fill="currentColor"
+    />
+  </svg>
+);
+
+const FacebookIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+    <path
+      d="M16.75 3.5h-1.95a3.8 3.8 0 0 0-3.8 3.8v2.4H8.1v3.05h2.9V20.5h3.2v-7.75h2.65l.45-3.05h-3.1V7.6c0-.5.41-.9.9-.9h2.55z"
+      fill="currentColor"
+    />
+  </svg>
+);
+
+const InstagramIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+    <rect x="3.5" y="3.5" width="17" height="17" rx="5" fill="none" stroke="currentColor" strokeWidth="1.5" />
+    <circle cx="12" cy="12" r="3.4" fill="none" stroke="currentColor" strokeWidth="1.5" />
+    <circle cx="17.3" cy="6.8" r="1.1" fill="currentColor" />
+  </svg>
+);
+
+const YouTubeIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+    <path
+      d="M21.4 8.3a2.5 2.5 0 0 0-1.78-1.76C17.8 6 12 6 12 6s-5.8 0-7.62.54A2.5 2.5 0 0 0 2.6 8.3 26.4 26.4 0 0 0 2 12a26.4 26.4 0 0 0 .6 3.7 2.5 2.5 0 0 0 1.78 1.76C6.2 18 12 18 12 18s5.8 0 7.62-.54a2.5 2.5 0 0 0 1.78-1.76c.39-1.2.6-2.45.6-3.7a26.4 26.4 0 0 0-.6-3.7z"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.4"
+    />
+    <path d="m10.4 9.75 4.5 2.25-4.5 2.25z" fill="currentColor" />
+  </svg>
+);
+
+const TikTokIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+    <path
+      d="M14.5 4.5c.48 1.6 1.8 2.78 3.45 3.02v2.28c-1.02-.05-2-.31-2.91-.75v5.6a4.65 4.65 0 1 1-4.65-4.64c.28 0 .55.03.82.08v2.38a2.4 2.4 0 1 0 1.6 2.27V4.5z"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
+const socialLinks = [
+  { name: 'LinkedIn', href: '#', Icon: LinkedInIcon },
+  { name: 'Facebook', href: '#', Icon: FacebookIcon },
+  { name: 'Instagram', href: '#', Icon: InstagramIcon },
+  { name: 'YouTube', href: '#', Icon: YouTubeIcon },
+  { name: 'TikTok', href: '#', Icon: TikTokIcon }
+];
+
 const App = () => {
+  const [newsletterEmail, setNewsletterEmail] = useState('');
+  const [newsletterSubmitted, setNewsletterSubmitted] = useState(false);
+
+  const handleNewsletterSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (!newsletterEmail.trim()) {
+      return;
+    }
+
+    setNewsletterSubmitted(true);
+    setNewsletterEmail('');
+    window.setTimeout(() => {
+      setNewsletterSubmitted(false);
+    }, 4000);
+  };
+
   return (
     <div className="app">
       <header className="app-header">
@@ -123,14 +203,78 @@ const App = () => {
 
       <footer className="footer">
         <div className="footer-content">
-          <p>© {new Date().getFullYear()} Cryptomatrix. All rights reserved.</p>
-          <div className="footer-links">
-            <a href="#home">Home</a>
-            <a href="#exchanges">Exchanges</a>
-            <a href="#algorithms">Algorithms</a>
-            <a href="#connect">Connect</a>
-            <a href="#about">About</a>
-            <a href="#contact">Contact</a>
+          <div className="footer-grid">
+            <div className="footer-summary">
+              <span className="footer-logo">cryptomatrix.ai</span>
+              <p className="footer-summary-copy">
+                Automation playbooks, exchange readiness checklists, and custody best practices shipped straight to your desk.
+              </p>
+            </div>
+
+            <nav className="footer-links" aria-label="Footer navigation">
+              <a href="#home">Home</a>
+              <a href="#exchanges">Exchanges</a>
+              <a href="#algorithms">Algorithms</a>
+              <a href="#connect">Connect</a>
+              <a href="#about">About</a>
+              <a href="#contact">Contact</a>
+            </nav>
+
+            <div className="footer-social">
+              <h4>Connect</h4>
+              <div className="footer-social-icons">
+                {socialLinks.map(({ name, href, Icon }) => (
+                  <a key={name} className="footer-social-icon" href={href} aria-label={name}>
+                    <Icon />
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            <form className="footer-newsletter" onSubmit={handleNewsletterSubmit}>
+              <label className="footer-newsletter-label" htmlFor="newsletter-email">
+                Newsletter
+              </label>
+              <div className="footer-newsletter-fields">
+                <input
+                  id="newsletter-email"
+                  name="newsletter-email"
+                  type="email"
+                  placeholder="you@desk.com"
+                  value={newsletterEmail}
+                  onChange={(event) => setNewsletterEmail(event.target.value)}
+                  required
+                />
+                <button type="submit">Subscribe</button>
+              </div>
+              <p className="footer-newsletter-copy">Weekly dispatch covering crypto execution alpha and infrastructure releases.</p>
+              {newsletterSubmitted && (
+                <p className="footer-newsletter-message" role="status">
+                  Thanks for subscribing. Check your inbox for a confirmation link.
+                </p>
+              )}
+            </form>
+          </div>
+
+          <div className="footer-legal">
+            <div className="footer-legal-item">
+              <h4>Privacy Policy</h4>
+              <p>
+                We encrypt every API credential, restrict data retention, and only monitor markets on your behalf.{' '}
+                <a href="/privacy">Review our data practices</a>.
+              </p>
+            </div>
+            <div className="footer-legal-item">
+              <h4>Terms of Use</h4>
+              <p>
+                Trading automation is provided for professional operators. Know your jurisdiction, manage risk, and confirm exchange compliance.{' '}
+                <a href="/terms">See full terms</a>.
+              </p>
+            </div>
+          </div>
+
+          <div className="footer-bottom">
+            <p>© {new Date().getFullYear()} Cryptomatrix. All rights reserved.</p>
           </div>
         </div>
       </footer>
