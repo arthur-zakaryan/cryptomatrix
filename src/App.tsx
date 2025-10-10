@@ -68,6 +68,109 @@ const socialLinks = [
   { name: 'TikTok', href: '#', Icon: TikTokIcon }
 ];
 
+const marqueeCoins = [
+  'BTC',
+  'ETH',
+  'USDT',
+  'USDC',
+  'BNB',
+  'XRP',
+  'ADA',
+  'DOGE',
+  'SOL',
+  'TRX',
+  'DOT',
+  'MATIC',
+  'LTC',
+  'SHIB',
+  'AVAX',
+  'UNI',
+  'LINK',
+  'XLM',
+  'BCH',
+  'ETC',
+  'XMR',
+  'ALGO',
+  'VET',
+  'ATOM',
+  'FIL',
+  'ICP',
+  'APE',
+  'SAND',
+  'AXS',
+  'THETA',
+  'HBAR',
+  'EGLD',
+  'XTZ',
+  'NEAR',
+  'FLOW',
+  'CHZ',
+  'MANA',
+  'AAVE',
+  'COMP',
+  'SNX',
+  'CRV',
+  'KSM',
+  'GRT',
+  '1INCH',
+  'BAT',
+  'ZIL',
+  'ENJ',
+  'KNC',
+  'RUNE',
+  'CAKE',
+  'FTM',
+  'MINA',
+  'ZRX',
+  'CELR',
+  'ANKR',
+  'QTUM',
+  'KAVA',
+  'AR',
+  'LRC',
+  'OMG',
+  'HOT',
+  'NANO',
+  'DASH',
+  'WAVES',
+  'TFUEL',
+  'RVN',
+  'IOST',
+  'BTT',
+  'ZEN',
+  'SC',
+  'STX',
+  'ONE',
+  'ROSE',
+  'CELO',
+  'BAL',
+  'YFI',
+  'SUSHI',
+  'GALA',
+  'ILV',
+  'LDO',
+  'DYDX',
+  'ARPA',
+  'MASK',
+  'OP',
+  'ARB',
+  'IMX',
+  'GNO',
+  'ENS',
+  'XDC',
+  'KAS',
+  'PEPE',
+  'FLOKI',
+  'BABYDOGE',
+  'WIF',
+  'BONK',
+  'TURBO',
+  'HOGE',
+  'AIDOGE',
+  'MEME',
+  'POPCAT'
+];
+
 const App = () => {
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [newsletterSubmitted, setNewsletterSubmitted] = useState(false);
@@ -176,6 +279,15 @@ const App = () => {
             <div className="orbital-stat">
               <span className="orbital-stat-value">{formatActiveCustomers(activeCustomers)}</span>
               <p className="orbital-stat-caption">Earners siphoning a fortune from crypto volatility inside Cryptomatrix right now</p>
+            </div>
+          </div>
+          <div className="orbital-marquee" aria-label="Top cryptocurrencies and memecoins">
+            <div className="orbital-marquee-track">
+              {marqueeCoins.concat(marqueeCoins).map((coin, index) => (
+                <span key={`orbital-coin-${index}`} className="orbital-marquee-coin">
+                  {coin}
+                </span>
+              ))}
             </div>
           </div>
         </section>
