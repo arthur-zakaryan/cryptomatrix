@@ -1,4 +1,4 @@
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import ConnectForm from './components/ConnectForm';
 import ContactForm from './components/ContactForm';
 import ContactInformation from './components/ContactInformation';
@@ -71,6 +71,12 @@ const socialLinks = [
 const App = () => {
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [newsletterSubmitted, setNewsletterSubmitted] = useState(false);
+  const [activeCustomers, setActiveCustomers] = useState(12000);
+  const aboutMantra = [
+    'Behind every mystery lies another',
+    'Where everything is explained, nothing is remembered',
+    'Curious... The mind follows what it can’t see'
+  ];
 
   const handleNewsletterSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -84,6 +90,22 @@ const App = () => {
     window.setTimeout(() => {
       setNewsletterSubmitted(false);
     }, 4000);
+  };
+
+  useEffect(() => {
+    const intervalId = window.setInterval(() => {
+      setActiveCustomers((current) => {
+        const delta = Math.floor(Math.random() * 141) - 70; // [-70, 70]
+        const nextValue = Math.min(12500, Math.max(11500, current + delta));
+        return Math.round(nextValue);
+      });
+    }, 3000);
+
+    return () => window.clearInterval(intervalId);
+  }, []);
+
+  const formatActiveCustomers = (value: number) => {
+    return `${new Intl.NumberFormat('en-US').format(value)}+`;
   };
 
   return (
@@ -138,7 +160,7 @@ const App = () => {
               </div>
             </div>
             <div className="orbital-stat">
-              <span className="orbital-stat-value">12K+</span>
+              <span className="orbital-stat-value">{formatActiveCustomers(activeCustomers)}</span>
               <p className="orbital-stat-caption">Earners siphoning a fortune from crypto volatility inside Cryptomatrix right now</p>
             </div>
           </div>
@@ -198,6 +220,15 @@ const App = () => {
             Cryptomatrix is a collective of quants, engineers, and market makers building autonomous strategies that
             outpace the market without sacrificing security.
           </p>
+          <div className="about-marquee" aria-label="Cryptomatrix guiding principles">
+            <div className="about-marquee-track">
+              {aboutMantra.concat(aboutMantra).map((phrase, index) => (
+                <span key={`mantra-${index}`} className="about-marquee-phrase">
+                  “{phrase}”
+                </span>
+              ))}
+            </div>
+          </div>
           <div className="about-grid">
             <div className="card about-card">
               <h3>We build with conviction</h3>

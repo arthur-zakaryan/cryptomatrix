@@ -308,6 +308,60 @@
   gap: 2.5rem;
 }
 
+.about-marquee {
+  width: min(960px, 100%);
+  overflow: hidden;
+  position: relative;
+  mask: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.9) 10%, rgba(0, 0, 0, 0.9) 90%, transparent 100%);
+  -webkit-mask: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.9) 10%, rgba(0, 0, 0, 0.9) 90%, transparent 100%);
+  margin-top: -1cm;
+}
+
+.about-marquee::before,
+.about-marquee::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 60px;
+  pointer-events: none;
+}
+
+.about-marquee::before {
+  left: 0;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.92), transparent);
+}
+
+.about-marquee::after {
+  right: 0;
+  background: linear-gradient(270deg, rgba(0, 0, 0, 0.92), transparent);
+}
+
+.about-marquee-track {
+  display: inline-flex;
+  align-items: center;
+  gap: clamp(2.5rem, 6vw, 4rem);
+  padding-block: 0.35rem;
+  animation: about-marquee 18s linear infinite;
+  white-space: nowrap;
+}
+
+.about-marquee-phrase {
+  font-size: 1rem;
+  color: rgba(212, 200, 255, 0.7);
+  font-style: italic;
+  letter-spacing: 0.05em;
+}
+
+@keyframes about-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
 .about-grid {
   width: min(960px, 100%);
   display: grid;
