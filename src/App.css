@@ -219,6 +219,7 @@
 .connect-section,
 .contact-section,
 .exchanges-section,
+.algorithms-section,
 .about-section {
   padding: clamp(3.5rem, 7vw, 6rem) clamp(1.5rem, 4vw, 4rem);
 }
@@ -233,6 +234,14 @@
  
 .exchanges-section {
   scroll-margin-top: 6rem;
+}
+
+.algorithms-section {
+  scroll-margin-top: 6rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.5rem;
 }
 
 .about-section {
@@ -283,6 +292,34 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 2rem;
+}
+
+.algorithms-grid {
+  width: min(1080px, 100%);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+}
+
+.algorithm-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.algorithm-focus {
+  margin: 0;
+  color: rgba(212, 200, 255, 0.7);
+  font-size: 0.95rem;
+}
+
+.algorithm-pros {
+  margin: 0;
+  padding-left: 1.1rem;
+  display: grid;
+  gap: 0.4rem;
+  color: rgba(244, 234, 255, 0.88);
+  font-size: 0.95rem;
 }
 
 .card {

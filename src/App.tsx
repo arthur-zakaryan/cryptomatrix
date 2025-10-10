@@ -2,6 +2,7 @@ import ConnectForm from './components/ConnectForm';
 import ContactForm from './components/ContactForm';
 import ContactInformation from './components/ContactInformation';
 import ExchangesShowcase from './components/ExchangesShowcase';
+import AlgorithmsShowcase from './components/AlgorithmsShowcase';
 import './App.css';
 
 const App = () => {
@@ -15,9 +16,10 @@ const App = () => {
         <nav className="nav">
           <a href="#home">Home</a>
           <a href="#exchanges">Exchanges</a>
+          <a href="#algorithms">Algorithms</a>
           <a href="#connect">Connect</a>
-          <a href="#contact">Contact</a>
           <a href="#about">About</a>
+          <a href="#contact">Contact</a>
         </nav>
       </header>
 
@@ -50,19 +52,16 @@ const App = () => {
           </div>
         </section>
 
-        <section id="contact" className="contact-section">
-          <h2 className="section-title gradient-text">Contact</h2>
-          <p className="section-intro">Reach out and our specialists will help you integrate Cryptomatrix with your preferred exchanges</p>
-          <div className="contact-grid">
-            <ContactForm />
-            <ContactInformation />
-          </div>
-        </section>
-
         <section id="exchanges" className="exchanges-section">
           <h2 className="section-title gradient-text">Supported Exchanges</h2>
           <p className="section-intro">Trade on top exchanges through a single secure interface where API keys stay encrypted and under your control</p>
           <ExchangesShowcase />
+        </section>
+
+        <section id="algorithms" className="algorithms-section">
+          <h2 className="section-title gradient-text">Algorithm Playbook</h2>
+          <p className="section-intro">Deploy proven technical, quantitative, and execution strategies tailored for 24/7 crypto markets</p>
+          <AlgorithmsShowcase />
         </section>
 
         <section id="connect" className="connect-section">
@@ -104,6 +103,15 @@ const App = () => {
             Join the Mission
           </a>
         </section>
+
+        <section id="contact" className="contact-section">
+          <h2 className="section-title gradient-text">Contact</h2>
+          <p className="section-intro">Reach out and our specialists will help you integrate Cryptomatrix with your preferred exchanges</p>
+          <div className="contact-grid">
+            <ContactForm />
+            <ContactInformation />
+          </div>
+        </section>
       </main>
 
       <footer className="footer">
@@ -112,9 +120,10 @@ const App = () => {
           <div className="footer-links">
             <a href="#home">Home</a>
             <a href="#exchanges">Exchanges</a>
+            <a href="#algorithms">Algorithms</a>
             <a href="#connect">Connect</a>
-            <a href="#contact">Contact</a>
             <a href="#about">About</a>
+            <a href="#contact">Contact</a>
           </div>
         </div>
       </footer>
