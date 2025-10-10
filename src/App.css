@@ -234,8 +234,9 @@
   flex-direction: column;
   align-items: flex-start;
   gap: 1.25rem;
-  padding-right: clamp(2rem, 5vw, 4rem);
-  max-width: 80rem;
+  margin: 0;
+  padding-right: clamp(1.5rem, 4vw, 3rem);
+  max-width: 68rem;
   width: 100%;
 }
 
@@ -244,7 +245,7 @@
   flex-direction: column;
   align-items: flex-start;
   gap: 1rem;
-  max-width: 80rem;
+  max-width: 68rem;
   width: 100%;
   text-align: left;
 }
@@ -258,7 +259,7 @@
 
 .hero-content p {
   margin: 1.25rem 0 2rem;
-  max-width: 76rem;
+  max-width: 64rem;
   color: rgba(212, 200, 255, 0.7);
   font-size: 1.15rem;
 }
