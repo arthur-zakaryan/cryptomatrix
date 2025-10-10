@@ -408,7 +408,7 @@ const App = () => {
               <li>Concierge onboarding to map bots to your liquidity footprint</li>
             </ul>
             <a className="cta-button pricing-cta" href="#contact">
-              Dive Into The Crypto Matrix
+              Dive Into Crypto Matrix
             </a>
             <p className="pricing-guarantee">No lock-in. If we do not earn multiples on $99 in your first cycle, cancel instantly.</p>
           </div>
