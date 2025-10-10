@@ -92,7 +92,7 @@ const ConnectForm = () => {
       <p className="card-intro">Enter your API credentials to link an exchange account</p>
       <ul className="connect-highlights">
         {connectHighlights.map(({ title, copy, Icon }) => (
-          <li key={title} className="connect-highlight">
+          <li key={title} className="connect-highlight" tabIndex={0}>
             <span className="connect-highlight-icon" aria-hidden="true">
               <Icon />
             </span>

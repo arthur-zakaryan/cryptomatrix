@@ -241,7 +241,7 @@ const App = () => {
             aria-label="Scroll to top"
           >
             <span className="brand-logo-wrapper">
-              <span className="brand-logo" role="img" aria-label="CaliOps logo" />
+              <span className="brand-logo" role="img" aria-label="Cryptomatrix logo" />
             </span>
             <span className="brand-text">
               <span className="brand-mark">cryptomatrix.ai</span>
@@ -288,7 +288,7 @@ const App = () => {
                 <span className="orbital-planet" />
               </div>
             </div>
-            <div className="orbital-stat">
+            <div className="orbital-stat" tabIndex={0} role="group" aria-label="Live active earners">
               <span className="orbital-stat-value">{formatActiveCustomers(activeCustomers)}</span>
               <p className="orbital-stat-caption">Earners siphoning a fortune from crypto volatility inside Cryptomatrix right now</p>
             </div>
