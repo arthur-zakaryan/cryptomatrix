@@ -318,25 +318,29 @@ const App = () => {
       <main>
         <section className="hero" id="home">
           <div className="hero-content">
-            <div className="brand-marquee" aria-label="Cryptomatrix parent company banner">
-              <div className="brand-marquee-track">
-                {Array.from({ length: 4 }).map((_, index) => (
-                  <span key={`brand-marquee-${index}`} className="brand-marquee-text">
-                    {brandMarqueeMessage}
-                  </span>
-                ))}
+            <div className="hero-content-inner">
+              <div className="brand-marquee" aria-label="Cryptomatrix parent company banner">
+                <div className="brand-marquee-track">
+                  {Array.from({ length: 4 }).map((_, index) => (
+                    <span key={`brand-marquee-${index}`} className="brand-marquee-text">
+                      {brandMarqueeMessage}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <div className="hero-content-text">
+                <h1>
+                  Intelligent <span className="gradient-text">crypto trading</span> for modern investors
+                </h1>
+                <p>
+                  Connect your exchange accounts securely with API keys and let our bots execute strategies 24/7. You keep
+                  full control while we handle the trades.
+                </p>
+                <a className="cta-button" href="#contact">
+                  Get Started
+                </a>
               </div>
             </div>
-            <h1>
-              Intelligent <span className="gradient-text">crypto trading</span> for modern investors
-            </h1>
-            <p>
-              Connect your exchange accounts securely with API keys and let our bots execute strategies 24/7. You keep
-              full control while we handle the trades.
-            </p>
-            <a className="cta-button" href="#contact">
-              Get Started
-            </a>
           </div>
           <div className="hero-visual">
             <div className="orbital" aria-hidden="true">
