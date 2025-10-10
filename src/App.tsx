@@ -10,7 +10,14 @@ const App = () => {
     <div className="app">
       <header className="app-header">
         <div className="brand">
-          <span className="brand-mark">cryptomatrix.ai</span>
+          <button
+            type="button"
+            className="brand-button"
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            aria-label="Scroll to top"
+          >
+            <span className="brand-mark">cryptomatrix.ai</span>
+          </button>
           <p className="brand-tagline">Automated trading that works while you sleep</p>
         </div>
         <nav className="nav">
