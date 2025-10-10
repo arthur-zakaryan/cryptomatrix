@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, MouseEvent, useEffect, useState } from 'react';
 import ConnectForm from './components/ConnectForm';
 import ContactForm from './components/ContactForm';
 import ContactInformation from './components/ContactInformation';
@@ -225,6 +225,11 @@ const App = () => {
     return new Intl.NumberFormat('en-US').format(value);
   };
 
+  const handleScrollToTop = (event: MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <div className="app">
       <header className="app-header">
@@ -235,12 +240,19 @@ const App = () => {
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             aria-label="Scroll to top"
           >
-            <span className="brand-mark">cryptomatrix.ai</span>
+            <span className="brand-logo-wrapper">
+              <span className="brand-logo" role="img" aria-label="CaliOps logo" />
+            </span>
+            <span className="brand-text">
+              <span className="brand-mark">cryptomatrix.ai</span>
+              <span className="brand-tagline">Automated trading that works while you sleep</span>
+            </span>
           </button>
-          <p className="brand-tagline">Automated trading that works while you sleep</p>
         </div>
         <nav className="nav">
-          <a href="#home">Home</a>
+          <a href="#home" onClick={handleScrollToTop}>
+            Home
+          </a>
           <a href="#exchanges">Exchanges</a>
           <a href="#algorithms">Algorithms</a>
           <a href="#connect">Connect</a>
