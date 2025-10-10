@@ -39,7 +39,15 @@ const ContactForm = () => {
         <div className="form-grid">
           <div className="form-field">
             <label htmlFor="name">Full Name</label>
-            <input id="name" name="name" type="text" value={formState.name} onChange={handleChange('name')} required />
+            <input
+              id="name"
+              name="name"
+              type="text"
+              value={formState.name}
+              onChange={handleChange('name')}
+              placeholder="Satoshi Nakamoto"
+              required
+            />
           </div>
           <div className="form-field">
             <label htmlFor="email">Email</label>
@@ -49,6 +57,7 @@ const ContactForm = () => {
               type="email"
               value={formState.email}
               onChange={handleChange('email')}
+              placeholder="you@cryptodesk.com"
               required
             />
           </div>
