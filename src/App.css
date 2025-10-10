@@ -133,6 +133,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
+  gap: 1.75rem;
 }
 
 .orbital {
@@ -212,6 +214,33 @@
   box-shadow: 0 0 12px rgba(113, 50, 245, 0.55);
 }
 
+.orbital-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 1rem 1.25rem;
+  border-radius: 18px;
+  background: rgba(15, 10, 29, 0.55);
+  border: 1px solid rgba(145, 83, 195, 0.35);
+  box-shadow: 0 18px 45px rgba(18, 12, 42, 0.45);
+}
+
+.orbital-stat-value {
+  font-size: clamp(2rem, 4vw, 2.6rem);
+  font-weight: 700;
+  color: #f4eaff;
+  letter-spacing: 0.05em;
+}
+
+.orbital-stat-caption {
+  margin: 0;
+  font-size: 0.9rem;
+  color: rgba(212, 200, 255, 0.7);
+  text-align: center;
+  max-width: 18rem;
+}
+
 @keyframes orbit-spin {
   from {
     transform: rotate(0deg);
@@ -238,6 +267,7 @@
 .contact-section,
 .exchanges-section,
 .algorithms-section,
+.pricing-section,
 .about-section {
   padding: clamp(3.5rem, 7vw, 6rem) clamp(1.5rem, 4vw, 4rem);
 }
@@ -255,6 +285,14 @@
 }
 
 .algorithms-section {
+  scroll-margin-top: 6rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.5rem;
+}
+
+.pricing-section {
   scroll-margin-top: 6rem;
   display: flex;
   flex-direction: column;
@@ -409,6 +447,92 @@
   gap: 0.4rem;
   color: rgba(244, 234, 255, 0.88);
   font-size: 0.95rem;
+}
+
+.pricing-card {
+  width: min(540px, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: clamp(2.2rem, 5vw, 3rem);
+  text-align: center;
+  background: linear-gradient(145deg, rgba(20, 12, 45, 0.92), rgba(15, 10, 40, 0.75));
+  border: 1px solid rgba(173, 121, 244, 0.45);
+  box-shadow: 0 30px 70px rgba(17, 9, 35, 0.55);
+}
+
+.pricing-card-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  align-items: center;
+}
+
+.pricing-label {
+  font-size: 0.95rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(212, 200, 255, 0.7);
+}
+
+.pricing-value {
+  margin: 0;
+  font-size: clamp(2.8rem, 5vw, 3.6rem);
+  font-weight: 700;
+  color: #f6f3ff;
+  line-height: 1.05;
+}
+
+.pricing-value span {
+  font-size: clamp(0.95rem, 2vw, 1.1rem);
+  font-weight: 500;
+  color: rgba(212, 200, 255, 0.7);
+  margin-left: 0.35rem;
+}
+
+.pricing-promise {
+  margin: 0;
+  font-size: 1.05rem;
+  color: rgba(244, 234, 255, 0.75);
+}
+
+.pricing-features {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.75rem;
+  text-align: left;
+}
+
+.pricing-features li {
+  display: flex;
+  gap: 0.65rem;
+  align-items: flex-start;
+  color: rgba(212, 200, 255, 0.82);
+  font-size: 0.95rem;
+}
+
+.pricing-features li::before {
+  content: '';
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #9153c3, #7132f5);
+  margin-top: 0.4rem;
+  flex-shrink: 0;
+  box-shadow: 0 0 10px rgba(113, 50, 245, 0.6);
+}
+
+.pricing-cta {
+  align-self: center;
+  padding-inline: clamp(2.2rem, 5vw, 3.1rem);
+}
+
+.pricing-guarantee {
+  margin: 0;
+  font-size: 0.85rem;
+  color: rgba(121, 220, 255, 0.9);
 }
 
 .card {

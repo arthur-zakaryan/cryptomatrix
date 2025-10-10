@@ -105,6 +105,7 @@ const App = () => {
           <a href="#exchanges">Exchanges</a>
           <a href="#algorithms">Algorithms</a>
           <a href="#connect">Connect</a>
+          <a href="#pricing">Pricing</a>
           <a href="#about">About</a>
           <a href="#contact">Contact</a>
         </nav>
@@ -136,6 +137,10 @@ const App = () => {
                 <span className="orbital-planet" />
               </div>
             </div>
+            <div className="orbital-stat">
+              <span className="orbital-stat-value">12K+</span>
+              <p className="orbital-stat-caption">Earners siphoning a fortune from crypto volatility inside Cryptomatrix right now</p>
+            </div>
           </div>
         </section>
 
@@ -155,6 +160,36 @@ const App = () => {
           <h2 className="section-title gradient-text">Exchange Connection</h2>
           <p className="section-intro">Link exchange accounts with read and trade permissions to enable automated strategies</p>
           <ConnectForm />
+        </section>
+
+        <section id="pricing" className="pricing-section">
+          <h2 className="section-title gradient-text">Grow With Confidence</h2>
+          <p className="section-intro">
+            One flat subscription unlocks the automation stack hedge funds spend six figures building&mdash;signal engines,
+            execution algos, and 24/7 oversight tuned for crypto volatility.
+          </p>
+          <div className="pricing-card card">
+            <div className="pricing-card-header">
+              <span className="pricing-label">AI Plan</span>
+              <p className="pricing-value">
+                $99<span>/month</span>
+              </p>
+            </div>
+            <p className="pricing-promise">
+              Capture more fills, slash manual grind, and scale strategies without hiring a quant desk. If you can capture a single
+              extra basis point per day, the subscription pays for itself many times over.
+            </p>
+            <ul className="pricing-features">
+              <li>Unlimited exchange connections with hardware-backed API key storage</li>
+              <li>Pre-tuned strategy library plus custom signal uploads</li>
+              <li>Real-time risk guardrails, alerts, and incident response</li>
+              <li>Concierge onboarding to map bots to your liquidity footprint</li>
+            </ul>
+            <a className="cta-button pricing-cta" href="#contact">
+              Dive Into The Matrix
+            </a>
+            <p className="pricing-guarantee">No lock-in. If we do not earn multiples on $99 in your first cycle, cancel instantly.</p>
+          </div>
         </section>
 
         <section id="about" className="about-section">
@@ -216,6 +251,7 @@ const App = () => {
               <a href="#exchanges">Exchanges</a>
               <a href="#algorithms">Algorithms</a>
               <a href="#connect">Connect</a>
+              <a href="#pricing">Pricing</a>
               <a href="#about">About</a>
               <a href="#contact">Contact</a>
             </nav>
