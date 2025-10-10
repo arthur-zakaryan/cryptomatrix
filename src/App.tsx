@@ -93,19 +93,33 @@ const App = () => {
   };
 
   useEffect(() => {
+    const MIN_CUSTOMERS = 7000;
+    const MAX_CUSTOMERS = 18000;
+
+    const targetForCurrentTime = () => {
+      const now = new Date();
+      const hours = now.getHours() + now.getMinutes() / 60;
+      const phase = ((hours - 12) / 24) * Math.PI * 2;
+      const normalized = (Math.cos(phase) + 1) / 2; // 0 at midnight, 1 at midday
+      return MIN_CUSTOMERS + normalized * (MAX_CUSTOMERS - MIN_CUSTOMERS);
+    };
+
     const intervalId = window.setInterval(() => {
       setActiveCustomers((current) => {
-        const delta = Math.floor(Math.random() * 141) - 70; // [-70, 70]
-        const nextValue = Math.min(12500, Math.max(11500, current + delta));
+        const target = targetForCurrentTime();
+        const directionalDrift = (target - current) * 0.35;
+        const randomJitter = Math.floor(Math.random() * 501) - 250; // [-250, 250]
+        let nextValue = current + directionalDrift + randomJitter;
+        nextValue = Math.min(MAX_CUSTOMERS, Math.max(MIN_CUSTOMERS, nextValue));
         return Math.round(nextValue);
       });
-    }, 3000);
+    }, 14000);
 
     return () => window.clearInterval(intervalId);
   }, []);
 
   const formatActiveCustomers = (value: number) => {
-    return `${new Intl.NumberFormat('en-US').format(value)}+`;
+    return new Intl.NumberFormat('en-US').format(value);
   };
 
   return (
