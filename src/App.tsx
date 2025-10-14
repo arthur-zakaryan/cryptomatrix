@@ -8,6 +8,7 @@ import PrivacyPolicy from './components/PrivacyPolicy';
 import TermsOfUse from './components/TermsOfUse';
 import LoginPage from './components/LoginPage';
 import SignUpPage from './components/SignUpPage';
+import ForgotPasswordPage from './components/ForgotPasswordPage';
 import './App.css';
 
 const LinkedInIcon = () => (
@@ -301,7 +302,7 @@ const App = () => {
   };
 
   const handleForgotPasswordNavigation = () => {
-    window.open('mailto:support@cryptomatrix.ai?subject=Password%20Reset%20Request', '_self');
+    navigateTo('/forgot-password');
   };
 
   const handleSignUpNavigation = () => {
@@ -345,6 +346,15 @@ const App = () => {
         onNavigateToLogin={handleReturnToLogin}
         onNavigateToTerms={navigateToTerms}
         onNavigateToPrivacy={navigateToPrivacy}
+      />
+    );
+  }
+
+  if (route === '/forgot-password') {
+    return (
+      <ForgotPasswordPage
+        onNavigateHome={() => navigateTo('/')}
+        onNavigateBackToLogin={handleReturnToLogin}
       />
     );
   }
