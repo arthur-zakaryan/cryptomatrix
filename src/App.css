@@ -25,6 +25,16 @@
   border-bottom: 1px solid rgba(145, 83, 195, 0.2);
 }
 
+.app-header-mobile-toggle {
+  display: none;
+  background: none;
+  border: 1px solid rgba(145, 83, 195, 0.35);
+  border-radius: 0.75rem;
+  padding: 0.4rem 0.65rem;
+  color: #f4f0ff;
+  cursor: pointer;
+}
+
 .brand {
   max-width: 28rem;
 }
@@ -161,6 +171,730 @@
 .nav a:focus-visible {
   outline: 2px solid rgba(173, 121, 244, 0.65);
   outline-offset: 3px;
+}
+
+.nav-open .app-header {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.96);
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.5rem;
+  padding: clamp(1.5rem, 4vw, 2rem);
+  overflow: auto;
+}
+
+.nav-open .nav {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+}
+
+.nav-open .nav a {
+  width: 100%;
+  text-align: left;
+}
+
+.nav-open .nav a.nav-login {
+  text-align: center;
+}
+
+.nav-open .app-header-mobile-toggle {
+  display: inline-flex;
+}
+
+.nav-open {
+  overflow: hidden;
+}
+
+.nav a.nav-login {
+  background: linear-gradient(135deg, #a975ff, #6329f2);
+  color: #fff;
+  border-color: rgba(173, 121, 244, 0.6);
+  box-shadow: 0 14px 32px rgba(113, 50, 245, 0.4), 0 2px 10px rgba(0, 0, 0, 0.45);
+  font-weight: 600;
+}
+
+.nav a.nav-login:hover,
+.nav a.nav-login:focus {
+  background: linear-gradient(135deg, #b58aff, #6c38ff);
+  box-shadow: 0 18px 36px rgba(113, 50, 245, 0.55), 0 4px 16px rgba(0, 0, 0, 0.5);
+  border-color: rgba(196, 154, 255, 0.75);
+}
+
+.nav a.nav-login:focus-visible {
+  outline: 2px solid rgba(196, 154, 255, 0.8);
+  outline-offset: 3px;
+}
+
+.login-page {
+  --login-vertical-padding: clamp(3rem, 6vw, 6rem);
+  --login-horizontal-padding: clamp(1.5rem, 5vw, 5rem);
+  min-height: 100vh;
+  padding: var(--login-vertical-padding) var(--login-horizontal-padding);
+  background: radial-gradient(circle at top right, rgba(113, 50, 245, 0.28), transparent 55%), #030208;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2rem, 4vw, 3rem);
+  color: #f4f0ff;
+  align-items: center;
+}
+
+.login-back-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  max-width: none;
+  align-self: stretch;
+  margin-left: calc(-1 * var(--login-horizontal-padding));
+  padding-left: var(--login-horizontal-padding);
+}
+
+.login-header {
+  max-width: 540px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+}
+
+.login-back {
+  align-self: flex-start;
+  border: 1px solid rgba(173, 121, 244, 0.45);
+  background: rgba(20, 12, 45, 0.55);
+  color: rgba(244, 234, 255, 0.88);
+  padding: 0.45rem 1.1rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.login-back:hover,
+.login-back:focus-visible {
+  transform: translateY(-1px);
+  border-color: rgba(203, 168, 255, 0.65);
+  box-shadow: 0 12px 24px rgba(18, 12, 42, 0.45);
+  outline: none;
+}
+
+.login-header h1 {
+  font-size: clamp(2.1rem, 4vw, 2.75rem);
+  margin: 0;
+  text-align: center;
+}
+
+.login-subtitle {
+  margin: 0;
+  color: rgba(220, 212, 255, 0.75);
+  font-size: clamp(0.55rem, 2.2vw, 1.05rem);
+  line-height: 1.45;
+  max-width: min(36ch, 100%);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  align-items: center;
+}
+
+.login-subtitle-line {
+  white-space: nowrap;
+  word-break: keep-all;
+}
+
+.login-card {
+  background: rgba(17, 10, 36, 0.92);
+  border-radius: 1.5rem;
+  border: 1px solid rgba(145, 83, 195, 0.25);
+  box-shadow: 0 24px 60px rgba(10, 5, 25, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  padding: clamp(2rem, 5vw, 3rem);
+  max-width: 520px;
+  width: 100%;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.login-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.login-field label {
+  font-weight: 600;
+  color: rgba(244, 234, 255, 0.9);
+}
+
+.login-field input {
+  border-radius: 0.95rem;
+  border: 1px solid rgba(145, 83, 195, 0.35);
+  background: rgba(6, 3, 15, 0.75);
+  padding: 0.85rem 1.1rem;
+  font-size: 1rem;
+  color: #f4f0ff;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.login-field input:focus {
+  outline: none;
+  border-color: rgba(173, 121, 244, 0.7);
+  box-shadow: 0 0 0 3px rgba(113, 50, 245, 0.25);
+}
+
+.login-field-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.login-link {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #b79bff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.login-link:hover,
+.login-link:focus {
+  color: #d7c6ff;
+  outline: none;
+}
+
+.login-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.login-remember {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: rgba(220, 212, 255, 0.75);
+  font-size: 0.95rem;
+}
+
+.login-remember input {
+  accent-color: #7132f5;
+}
+
+.login-submit {
+  background: linear-gradient(135deg, #9153c3, #7132f5);
+  border: none;
+  color: #fff;
+  padding: 0.95rem;
+  border-radius: 999px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.login-submit:hover,
+.login-submit:focus {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 34px rgba(113, 50, 245, 0.45);
+  outline: none;
+}
+
+.login-footer {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  align-items: center;
+  font-size: 0.95rem;
+  color: rgba(220, 212, 255, 0.78);
+}
+
+.login-footer .login-link {
+  font-size: 0.95rem;
+}
+
+@media (max-width: 640px) {
+  .login-page {
+    --login-vertical-padding: clamp(2rem, 6vw, 3rem);
+    --login-horizontal-padding: clamp(1rem, 4vw, 2rem);
+    padding: var(--login-vertical-padding) var(--login-horizontal-padding);
+  }
+
+  .login-card {
+    padding: clamp(1.5rem, 5vw, 2.25rem);
+  }
+
+  .login-page,
+  .signup-page {
+    align-items: stretch;
+  }
+
+  .login-header,
+  .signup-header {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .login-subtitle,
+  .signup-subtitle {
+    text-align: left;
+  }
+
+  .nav-open .app-header {
+    padding: clamp(1.25rem, 5vw, 1.75rem);
+  }
+}
+
+.signup-page {
+  --signup-vertical-padding: clamp(3rem, 6vw, 6rem);
+  --signup-horizontal-padding: clamp(1.5rem, 5vw, 5rem);
+  min-height: 100vh;
+  padding: var(--signup-vertical-padding) var(--signup-horizontal-padding);
+  background: radial-gradient(circle at top left, rgba(113, 50, 245, 0.22), transparent 50%), #05020d;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2rem, 4vw, 3rem);
+  color: #f4f0ff;
+  align-items: center;
+}
+
+.signup-back-wrapper {
+  width: 100%;
+  align-self: stretch;
+  display: flex;
+  justify-content: flex-start;
+  margin-left: calc(-1 * var(--signup-horizontal-padding));
+  padding-left: var(--signup-horizontal-padding);
+}
+
+.signup-back {
+  border: 1px solid rgba(173, 121, 244, 0.45);
+  background: rgba(20, 12, 45, 0.55);
+  color: rgba(244, 234, 255, 0.88);
+  padding: 0.45rem 1.1rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.signup-back:hover,
+.signup-back:focus-visible {
+  transform: translateY(-1px);
+  border-color: rgba(203, 168, 255, 0.65);
+  box-shadow: 0 12px 24px rgba(18, 12, 42, 0.45);
+  outline: none;
+}
+
+.signup-header {
+  max-width: 640px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  text-align: center;
+}
+
+.signup-header h1 {
+  font-size: clamp(2.1rem, 4vw, 2.9rem);
+  margin: 0;
+}
+
+.signup-subtitle {
+  margin: 0;
+  font-size: 1.05rem;
+  color: rgba(220, 212, 255, 0.75);
+  max-width: 48ch;
+}
+
+.signup-card {
+  background: rgba(17, 10, 36, 0.92);
+  border-radius: 1.5rem;
+  border: 1px solid rgba(145, 83, 195, 0.25);
+  box-shadow: 0 24px 60px rgba(10, 5, 25, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  padding: clamp(2rem, 5vw, 3.25rem);
+  max-width: 640px;
+  width: 100%;
+}
+
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.signup-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+.signup-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.signup-dob-field,
+.signup-country-field {
+  position: relative;
+}
+
+.signup-calendar {
+  position: absolute;
+  top: calc(100% + 0.6rem);
+  left: 0;
+  width: clamp(320px, calc(150% + 0.625rem), 560px);
+  border-radius: 1.25rem;
+  background: rgba(6, 3, 15, 0.95);
+  border: 1px solid rgba(145, 83, 195, 0.35);
+  box-shadow: 0 24px 48px rgba(10, 5, 25, 0.6);
+  padding: 1.1rem 1rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  z-index: 6;
+  backdrop-filter: blur(6px);
+}
+
+.signup-calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+  color: rgba(244, 234, 255, 0.9);
+}
+
+.signup-calendar-selects {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-grow: 1;
+  justify-content: center;
+}
+
+.signup-calendar-header button {
+  background: rgba(23, 14, 45, 0.8);
+  border: 1px solid rgba(145, 83, 195, 0.35);
+  border-radius: 0.75rem;
+  color: rgba(244, 234, 255, 0.9);
+  padding: 0.25rem 0.6rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+.signup-calendar-header button svg {
+  width: 0.65rem;
+  height: 0.65rem;
+}
+
+.signup-calendar-header button:hover,
+.signup-calendar-header button:focus {
+  transform: translateY(-1px);
+  background: rgba(145, 83, 195, 0.3);
+  border-color: rgba(173, 121, 244, 0.55);
+  outline: none;
+}
+
+.signup-calendar-select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background: rgba(23, 14, 45, 0.75);
+  border: 1px solid rgba(145, 83, 195, 0.35);
+  border-radius: 0.75rem;
+  color: rgba(244, 234, 255, 0.92);
+  padding: 0.35rem 1.65rem 0.35rem 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  background-image: none;
+}
+
+.signup-calendar-select:focus {
+  outline: none;
+  border-color: rgba(173, 121, 244, 0.55);
+  box-shadow: 0 0 0 3px rgba(113, 50, 245, 0.25);
+}
+
+.signup-calendar-select option {
+  color: #111;
+}
+
+.signup-calendar-select--month {
+  min-width: 140px;
+}
+
+.signup-calendar-select--year {
+  min-width: 110px;
+}
+
+.signup-calendar-header button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+  background: rgba(23, 14, 45, 0.6);
+  border-color: rgba(145, 83, 195, 0.2);
+}
+
+.signup-calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(212, 200, 255, 0.6);
+  text-align: center;
+}
+
+.signup-calendar-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.signup-calendar-row {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.4rem;
+}
+
+.signup-calendar-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(23, 14, 45, 0.7);
+  border: 1px solid transparent;
+  border-radius: 0.85rem;
+  padding: 0.6rem 0;
+  text-align: center;
+  color: rgba(244, 234, 255, 0.9);
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+.signup-calendar-cell--empty {
+  background: transparent;
+  border-color: transparent;
+  cursor: default;
+}
+
+button.signup-calendar-cell:hover,
+button.signup-calendar-cell:focus {
+  background: rgba(145, 83, 195, 0.25);
+  border-color: rgba(173, 121, 244, 0.45);
+  transform: translateY(-1px);
+  outline: none;
+}
+
+button.signup-calendar-cell.signup-calendar-cell--selected {
+  background: linear-gradient(135deg, #9153c3, #7132f5);
+  border-color: transparent;
+  box-shadow: 0 12px 24px rgba(113, 50, 245, 0.35);
+  color: #fff;
+}
+
+button.signup-calendar-cell.signup-calendar-cell--today {
+  border-color: rgba(173, 121, 244, 0.65);
+}
+
+button.signup-calendar-cell:disabled {
+  cursor: default;
+  opacity: 0.4;
+  background: rgba(23, 14, 45, 0.4);
+  border-color: transparent;
+  transform: none;
+}
+
+.signup-country-suggestions {
+  position: absolute;
+  top: calc(100% + 0.4rem);
+  left: 0;
+  right: 0;
+  background: rgba(6, 3, 15, 0.95);
+  border: 1px solid rgba(145, 83, 195, 0.35);
+  border-radius: 1rem;
+  box-shadow: 0 18px 34px rgba(10, 5, 25, 0.55);
+  list-style: none;
+  margin: 0;
+  padding: 0.35rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  max-height: 220px;
+  overflow-y: auto;
+  z-index: 5;
+  backdrop-filter: blur(6px);
+}
+
+.signup-country-option {
+  width: 100%;
+  text-align: left;
+  background: rgba(23, 14, 45, 0.75);
+  border: 1px solid transparent;
+  color: rgba(244, 234, 255, 0.92);
+  padding: 0.65rem 0.9rem;
+  border-radius: 0.85rem;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.signup-country-option:hover,
+.signup-country-option:focus {
+  background: rgba(145, 83, 195, 0.25);
+  border-color: rgba(173, 121, 244, 0.45);
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.signup-field label {
+  font-weight: 600;
+  color: rgba(244, 234, 255, 0.9);
+}
+
+.signup-field input {
+  border-radius: 0.95rem;
+  border: 1px solid rgba(145, 83, 195, 0.35);
+  background: rgba(6, 3, 15, 0.75);
+  padding: 0.85rem 1.1rem;
+  font-size: 1rem;
+  color: #f4f0ff;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.signup-field input:focus {
+  outline: none;
+  border-color: rgba(173, 121, 244, 0.7);
+  box-shadow: 0 0 0 3px rgba(113, 50, 245, 0.25);
+}
+
+.signup-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.signup-terms {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  color: rgba(220, 212, 255, 0.75);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.signup-terms input {
+  margin-top: 0.2rem;
+  accent-color: #7132f5;
+}
+
+.signup-inline-link {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #b79bff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.signup-inline-link:hover,
+.signup-inline-link:focus {
+  color: #d7c6ff;
+  outline: none;
+}
+
+.signup-submit {
+  background: linear-gradient(135deg, #9153c3, #7132f5);
+  border: none;
+  color: #fff;
+  padding: 0.95rem;
+  border-radius: 999px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.signup-submit:hover,
+.signup-submit:focus {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 34px rgba(113, 50, 245, 0.45);
+  outline: none;
+}
+
+.signup-footer {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  align-items: center;
+  font-size: 0.95rem;
+  color: rgba(220, 212, 255, 0.78);
+}
+
+.signup-footer .signup-inline-link {
+  font-size: 0.95rem;
+}
+
+@media (max-width: 720px) {
+  .signup-page {
+    --signup-vertical-padding: clamp(2rem, 6vw, 3rem);
+    --signup-horizontal-padding: clamp(1rem, 4vw, 2rem);
+  }
+
+  .signup-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .signup-terms {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .signup-calendar {
+    width: 100%;
+  }
+
+  .signup-calendar-header {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: stretch;
+  }
+
+  .signup-calendar-selects {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .signup-calendar-select-wrapper {
+    flex: 1 1 48%;
+  }
+
+  .signup-calendar-select {
+    width: 100%;
+  }
+}
+
+@media (max-width: 840px) {
+  .nav {
+    display: none;
+  }
+
+  .app-header-mobile-toggle {
+    display: inline-flex;
+  }
 }
 
 .hero {
@@ -1898,4 +2632,23 @@
   60% {
     transform: scale(0.96);
   }
+}
+.signup-calendar-select-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.signup-calendar-select-wrapper::after {
+  content: '';
+  position: absolute;
+  right: 0.7rem;
+  top: 50%;
+  transform: translateY(-40%);
+  width: 0;
+  height: 0;
+  border-left: 0.35rem solid transparent;
+  border-right: 0.35rem solid transparent;
+  border-top: 0.45rem solid rgba(244, 234, 255, 0.85);
+  pointer-events: none;
 }

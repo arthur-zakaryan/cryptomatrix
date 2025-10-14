@@ -6,6 +6,8 @@ import ExchangesShowcase from './components/ExchangesShowcase';
 import AlgorithmsShowcase from './components/AlgorithmsShowcase';
 import PrivacyPolicy from './components/PrivacyPolicy';
 import TermsOfUse from './components/TermsOfUse';
+import LoginPage from './components/LoginPage';
+import SignUpPage from './components/SignUpPage';
 import './App.css';
 
 const LinkedInIcon = () => (
@@ -180,6 +182,7 @@ const App = () => {
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [newsletterSubmitted, setNewsletterSubmitted] = useState(false);
   const [activeCustomers, setActiveCustomers] = useState(12000);
+  const [isNavOpen, setIsNavOpen] = useState(false);
   const aboutMantra = [
     'Behind every mystery lies another',
     'Where everything is explained, nothing is remembered',
@@ -189,10 +192,20 @@ const App = () => {
   useEffect(() => {
     const handlePopstate = () => {
       setRoute(window.location.pathname || '/');
+      setIsNavOpen(false);
+    };
+    const handleResize = () => {
+      if (window.innerWidth > 840) {
+        setIsNavOpen(false);
+      }
     };
 
     window.addEventListener('popstate', handlePopstate);
-    return () => window.removeEventListener('popstate', handlePopstate);
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('popstate', handlePopstate);
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
   useEffect(() => {
@@ -200,6 +213,8 @@ const App = () => {
       document.title = 'Privacy Policy | Cryptomatrix';
     } else if (route === '/terms') {
       document.title = 'Terms of Use | Cryptomatrix';
+    } else if (route === '/login') {
+      document.title = 'Login | Cryptomatrix';
     } else {
       document.title = 'Cryptomatrix';
     }
@@ -209,11 +224,13 @@ const App = () => {
   const navigateTo = (path: string) => {
     if (path === route) {
       window.scrollTo({ top: 0, behavior: 'smooth' });
+      setIsNavOpen(false);
       return;
     }
 
     window.history.pushState({}, '', path);
     setRoute(path);
+    setIsNavOpen(false);
   };
 
   const handleNewsletterSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -263,6 +280,7 @@ const App = () => {
   const handleScrollToTop = (event: MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    setIsNavOpen(false);
   };
 
   const handlePrivacyNavigation = (event: MouseEvent<HTMLAnchorElement>) => {
@@ -273,6 +291,33 @@ const App = () => {
   const handleTermsNavigation = (event: MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
     navigateTo('/terms');
+    setIsNavOpen(false);
+  };
+
+  const handleLoginNavigation = (event: MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    navigateTo('/login');
+    setIsNavOpen(false);
+  };
+
+  const handleForgotPasswordNavigation = () => {
+    window.open('mailto:support@cryptomatrix.ai?subject=Password%20Reset%20Request', '_self');
+  };
+
+  const handleSignUpNavigation = () => {
+    navigateTo('/signup');
+  };
+
+  const handleReturnToLogin = () => {
+    navigateTo('/login');
+  };
+
+  const navigateToTerms = () => {
+    navigateTo('/terms');
+  };
+
+  const navigateToPrivacy = () => {
+    navigateTo('/privacy');
   };
 
   if (route === '/privacy') {
@@ -283,8 +328,29 @@ const App = () => {
     return <TermsOfUse onNavigateHome={() => navigateTo('/')} onNavigateToPrivacy={() => navigateTo('/privacy')} />;
   }
 
+  if (route === '/login') {
+    return (
+      <LoginPage
+        onNavigateHome={() => navigateTo('/')}
+        onNavigateToForgotPassword={handleForgotPasswordNavigation}
+        onNavigateToSignUp={handleSignUpNavigation}
+      />
+    );
+  }
+
+  if (route === '/signup') {
+    return (
+      <SignUpPage
+        onNavigateHome={() => navigateTo('/')}
+        onNavigateToLogin={handleReturnToLogin}
+        onNavigateToTerms={navigateToTerms}
+        onNavigateToPrivacy={navigateToPrivacy}
+      />
+    );
+  }
+
   return (
-    <div className="app">
+    <div className={`app${isNavOpen ? ' nav-open' : ''}`}>
       <header className="app-header">
         <div className="brand">
           <button
@@ -302,16 +368,41 @@ const App = () => {
             </span>
           </button>
         </div>
-        <nav className="nav">
+        <button
+          type="button"
+          className="app-header-mobile-toggle"
+          aria-expanded={isNavOpen}
+          aria-controls="primary-navigation"
+          aria-label={isNavOpen ? 'Close navigation menu' : 'Open navigation menu'}
+          onClick={() => setIsNavOpen((current) => !current)}
+        >
+          {isNavOpen ? 'Close' : 'Menu'}
+        </button>
+        <nav className="nav" id="primary-navigation">
           <a href="#home" onClick={handleScrollToTop}>
             Home
           </a>
-          <a href="#exchanges">Exchanges</a>
-          <a href="#algorithms">Algorithms</a>
-          <a href="#connect">Connect</a>
-          <a href="#pricing">Pricing</a>
-          <a href="#about">About</a>
-          <a href="#contact">Contact</a>
+          <a href="#exchanges" onClick={() => setIsNavOpen(false)}>
+            Exchanges
+          </a>
+          <a href="#algorithms" onClick={() => setIsNavOpen(false)}>
+            Algorithms
+          </a>
+          <a href="#connect" onClick={() => setIsNavOpen(false)}>
+            Connect
+          </a>
+          <a href="#pricing" onClick={() => setIsNavOpen(false)}>
+            Pricing
+          </a>
+          <a href="#about" onClick={() => setIsNavOpen(false)}>
+            About
+          </a>
+          <a href="#contact" onClick={() => setIsNavOpen(false)}>
+            Contact
+          </a>
+          <a href="/login" className="nav-login" onClick={handleLoginNavigation}>
+            Login
+          </a>
         </nav>
       </header>
 
