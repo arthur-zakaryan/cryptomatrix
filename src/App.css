@@ -424,12 +424,32 @@
 @media (max-width: 640px) {
   .login-page {
     --login-vertical-padding: clamp(2rem, 6vw, 3rem);
-  --login-horizontal-padding: clamp(1rem, 4vw, 2rem);
-  padding: var(--login-vertical-padding) var(--login-horizontal-padding);
-}
+    --login-horizontal-padding: clamp(1rem, 4vw, 2rem);
+    padding: var(--login-vertical-padding) var(--login-horizontal-padding);
+  }
 
   .login-card {
     padding: clamp(1.5rem, 5vw, 2.25rem);
+  }
+
+  .login-page,
+  .signup-page {
+    align-items: stretch;
+  }
+
+  .login-header,
+  .signup-header {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .login-subtitle,
+  .signup-subtitle {
+    text-align: left;
+  }
+
+  .nav-open .app-header {
+    padding: clamp(1.25rem, 5vw, 1.75rem);
   }
 }
 
@@ -525,8 +545,176 @@
   gap: 0.6rem;
 }
 
+.signup-dob-field,
 .signup-country-field {
   position: relative;
+}
+
+.signup-calendar {
+  position: absolute;
+  top: calc(100% + 0.6rem);
+  left: 0;
+  width: clamp(320px, calc(150% + 0.625rem), 560px);
+  border-radius: 1.25rem;
+  background: rgba(6, 3, 15, 0.95);
+  border: 1px solid rgba(145, 83, 195, 0.35);
+  box-shadow: 0 24px 48px rgba(10, 5, 25, 0.6);
+  padding: 1.1rem 1rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  z-index: 6;
+  backdrop-filter: blur(6px);
+}
+
+.signup-calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+  color: rgba(244, 234, 255, 0.9);
+}
+
+.signup-calendar-selects {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-grow: 1;
+  justify-content: center;
+}
+
+.signup-calendar-header button {
+  background: rgba(23, 14, 45, 0.8);
+  border: 1px solid rgba(145, 83, 195, 0.35);
+  border-radius: 0.75rem;
+  color: rgba(244, 234, 255, 0.9);
+  padding: 0.25rem 0.6rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+.signup-calendar-header button svg {
+  width: 0.65rem;
+  height: 0.65rem;
+}
+
+.signup-calendar-header button:hover,
+.signup-calendar-header button:focus {
+  transform: translateY(-1px);
+  background: rgba(145, 83, 195, 0.3);
+  border-color: rgba(173, 121, 244, 0.55);
+  outline: none;
+}
+
+.signup-calendar-select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background: rgba(23, 14, 45, 0.75);
+  border: 1px solid rgba(145, 83, 195, 0.35);
+  border-radius: 0.75rem;
+  color: rgba(244, 234, 255, 0.92);
+  padding: 0.35rem 1.65rem 0.35rem 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  background-image: none;
+}
+
+.signup-calendar-select:focus {
+  outline: none;
+  border-color: rgba(173, 121, 244, 0.55);
+  box-shadow: 0 0 0 3px rgba(113, 50, 245, 0.25);
+}
+
+.signup-calendar-select option {
+  color: #111;
+}
+
+.signup-calendar-select--month {
+  min-width: 140px;
+}
+
+.signup-calendar-select--year {
+  min-width: 110px;
+}
+
+.signup-calendar-header button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+  background: rgba(23, 14, 45, 0.6);
+  border-color: rgba(145, 83, 195, 0.2);
+}
+
+.signup-calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(212, 200, 255, 0.6);
+  text-align: center;
+}
+
+.signup-calendar-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.signup-calendar-row {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.4rem;
+}
+
+.signup-calendar-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(23, 14, 45, 0.7);
+  border: 1px solid transparent;
+  border-radius: 0.85rem;
+  padding: 0.6rem 0;
+  text-align: center;
+  color: rgba(244, 234, 255, 0.9);
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+.signup-calendar-cell--empty {
+  background: transparent;
+  border-color: transparent;
+  cursor: default;
+}
+
+button.signup-calendar-cell:hover,
+button.signup-calendar-cell:focus {
+  background: rgba(145, 83, 195, 0.25);
+  border-color: rgba(173, 121, 244, 0.45);
+  transform: translateY(-1px);
+  outline: none;
+}
+
+button.signup-calendar-cell.signup-calendar-cell--selected {
+  background: linear-gradient(135deg, #9153c3, #7132f5);
+  border-color: transparent;
+  box-shadow: 0 12px 24px rgba(113, 50, 245, 0.35);
+  color: #fff;
+}
+
+button.signup-calendar-cell.signup-calendar-cell--today {
+  border-color: rgba(173, 121, 244, 0.65);
+}
+
+button.signup-calendar-cell:disabled {
+  cursor: default;
+  opacity: 0.4;
+  background: rgba(23, 14, 45, 0.4);
+  border-color: transparent;
+  transform: none;
 }
 
 .signup-country-suggestions {
@@ -673,6 +861,29 @@
   .signup-terms {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .signup-calendar {
+    width: 100%;
+  }
+
+  .signup-calendar-header {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: stretch;
+  }
+
+  .signup-calendar-selects {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .signup-calendar-select-wrapper {
+    flex: 1 1 48%;
+  }
+
+  .signup-calendar-select {
+    width: 100%;
   }
 }
 
@@ -2421,4 +2632,23 @@
   60% {
     transform: scale(0.96);
   }
+}
+.signup-calendar-select-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.signup-calendar-select-wrapper::after {
+  content: '';
+  position: absolute;
+  right: 0.7rem;
+  top: 50%;
+  transform: translateY(-40%);
+  width: 0;
+  height: 0;
+  border-left: 0.35rem solid transparent;
+  border-right: 0.35rem solid transparent;
+  border-top: 0.45rem solid rgba(244, 234, 255, 0.85);
+  pointer-events: none;
 }
