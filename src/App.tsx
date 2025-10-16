@@ -1,4 +1,4 @@
-import { FormEvent, MouseEvent, useEffect, useState } from 'react';
+import { FormEvent, MouseEvent, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import ConnectForm from './components/ConnectForm';
 import ContactForm from './components/ContactForm';
 import ContactInformation from './components/ContactInformation';
@@ -178,12 +178,40 @@ const marqueeCoins = [
 
 const brandMarqueeMessage = 'cryptomatrix.ai — a company of Cali Group Conglomerate';
 
+const MOBILE_BREAKPOINT = 840;
+const MIN_VISIBLE_NAV_ITEMS = 3;
+
+type NavLinkConfig = {
+  id: string;
+  label: string;
+  href: string;
+  className?: string;
+  action?: 'scrollTop' | 'login';
+};
+
+const NAV_LINKS: NavLinkConfig[] = [
+  { id: 'home', label: 'Home', href: '#home', action: 'scrollTop' },
+  { id: 'exchanges', label: 'Exchanges', href: '#exchanges' },
+  { id: 'algorithms', label: 'Algorithms', href: '#algorithms' },
+  { id: 'connect', label: 'Connect', href: '#connect' },
+  { id: 'pricing', label: 'Pricing', href: '#pricing' },
+  { id: 'about', label: 'About', href: '#about' },
+  { id: 'contact', label: 'Contact', href: '#contact' },
+  { id: 'login', label: 'Login', href: '/login', className: 'nav-login', action: 'login' }
+];
+
 const App = () => {
   const [route, setRoute] = useState(window.location.pathname || '/');
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [newsletterSubmitted, setNewsletterSubmitted] = useState(false);
   const [activeCustomers, setActiveCustomers] = useState(12000);
-  const [isNavOpen, setIsNavOpen] = useState(false);
+  const [isOverflowOpen, setIsOverflowOpen] = useState(false);
+  const [isMobileView, setIsMobileView] = useState(() => window.innerWidth <= MOBILE_BREAKPOINT);
+  const [overflowStartIndex, setOverflowStartIndex] = useState<number>(NAV_LINKS.length);
+  const navContainerRef = useRef<HTMLDivElement | null>(null);
+  const measurementContainerRef = useRef<HTMLDivElement | null>(null);
+  const measurementItemRefs = useRef<(HTMLAnchorElement | null)[]>([]);
+  const measurementToggleRef = useRef<HTMLButtonElement | null>(null);
   const aboutMantra = [
     'Behind every mystery lies another',
     'Where everything is explained, nothing is remembered',
@@ -193,16 +221,20 @@ const App = () => {
   useEffect(() => {
     const handlePopstate = () => {
       setRoute(window.location.pathname || '/');
-      setIsNavOpen(false);
+      setIsOverflowOpen(false);
     };
     const handleResize = () => {
-      if (window.innerWidth > 840) {
-        setIsNavOpen(false);
+      const mobile = window.innerWidth <= MOBILE_BREAKPOINT;
+      setIsMobileView(mobile);
+      if (!mobile) {
+        setIsOverflowOpen(false);
+        setOverflowStartIndex(NAV_LINKS.length);
       }
     };
 
     window.addEventListener('popstate', handlePopstate);
     window.addEventListener('resize', handleResize);
+    handleResize();
     return () => {
       window.removeEventListener('popstate', handlePopstate);
       window.removeEventListener('resize', handleResize);
@@ -222,17 +254,17 @@ const App = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [route]);
 
-  const navigateTo = (path: string) => {
+  const navigateTo = useCallback((path: string) => {
     if (path === route) {
       window.scrollTo({ top: 0, behavior: 'smooth' });
-      setIsNavOpen(false);
+      setIsOverflowOpen(false);
       return;
     }
 
     window.history.pushState({}, '', path);
     setRoute(path);
-    setIsNavOpen(false);
-  };
+    setIsOverflowOpen(false);
+  }, [route]);
 
   const handleNewsletterSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -278,28 +310,28 @@ const App = () => {
     return new Intl.NumberFormat('en-US').format(value);
   };
 
-  const handleScrollToTop = (event: MouseEvent<HTMLAnchorElement>) => {
+  const handleScrollToTop = useCallback((event: MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    setIsNavOpen(false);
-  };
+    setIsOverflowOpen(false);
+  }, []);
 
-  const handlePrivacyNavigation = (event: MouseEvent<HTMLAnchorElement>) => {
+  const handlePrivacyNavigation = useCallback((event: MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
     navigateTo('/privacy');
-  };
+  }, [navigateTo]);
 
-  const handleTermsNavigation = (event: MouseEvent<HTMLAnchorElement>) => {
+  const handleTermsNavigation = useCallback((event: MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
     navigateTo('/terms');
-    setIsNavOpen(false);
-  };
+    setIsOverflowOpen(false);
+  }, [navigateTo]);
 
-  const handleLoginNavigation = (event: MouseEvent<HTMLAnchorElement>) => {
+  const handleLoginNavigation = useCallback((event: MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
     navigateTo('/login');
-    setIsNavOpen(false);
-  };
+    setIsOverflowOpen(false);
+  }, [navigateTo]);
 
   const handleForgotPasswordNavigation = () => {
     navigateTo('/forgot-password');
@@ -320,6 +352,160 @@ const App = () => {
   const navigateToPrivacy = () => {
     navigateTo('/privacy');
   };
+
+  const handleNavItemSelect = useCallback(
+    (item: NavLinkConfig) => (event: MouseEvent<HTMLAnchorElement>) => {
+      if (item.action === 'scrollTop') {
+        handleScrollToTop(event);
+        return;
+      }
+
+      if (item.action === 'login') {
+        handleLoginNavigation(event);
+        return;
+      }
+
+      setIsOverflowOpen(false);
+    },
+    [handleLoginNavigation, handleScrollToTop]
+  );
+
+  useLayoutEffect(() => {
+    if (!isMobileView) {
+      if (overflowStartIndex !== NAV_LINKS.length) {
+        setOverflowStartIndex(NAV_LINKS.length);
+      }
+      return;
+    }
+
+    const minimumVisible = Math.min(MIN_VISIBLE_NAV_ITEMS, NAV_LINKS.length);
+
+    const computeVisibleCount = (availableWidth: number, gap: number) => {
+      if (availableWidth <= 0) {
+        return minimumVisible;
+      }
+
+      let usedWidth = 0;
+      let nextVisibleCount = minimumVisible;
+
+      for (let index = 0; index < NAV_LINKS.length; index += 1) {
+        const itemNode = measurementItemRefs.current[index];
+        if (!itemNode) {
+          continue;
+        }
+
+        const itemWidth = itemNode.offsetWidth;
+        const gapBefore = index === 0 ? 0 : gap;
+
+        if (index < minimumVisible) {
+          usedWidth += gapBefore + itemWidth;
+          nextVisibleCount = index + 1;
+          continue;
+        }
+
+        if (usedWidth + gapBefore + itemWidth <= availableWidth) {
+          usedWidth += gapBefore + itemWidth;
+          nextVisibleCount = index + 1;
+        } else {
+          break;
+        }
+      }
+
+      return Math.min(nextVisibleCount, NAV_LINKS.length);
+    };
+
+    const calculateOverflow = () => {
+      const currentNavNode = navContainerRef.current;
+
+      if (!currentNavNode) {
+        return;
+      }
+
+      const navStyles = window.getComputedStyle(currentNavNode);
+      const gap = Number.parseFloat(navStyles.columnGap || navStyles.gap || '0') || 0;
+      const toggleWidth = measurementToggleRef.current?.offsetWidth ?? 0;
+
+      const baseVisibleCount = computeVisibleCount(currentNavNode.offsetWidth, gap);
+
+      if (baseVisibleCount === NAV_LINKS.length) {
+        if (overflowStartIndex !== NAV_LINKS.length) {
+          setOverflowStartIndex(NAV_LINKS.length);
+        }
+        if (isOverflowOpen) {
+          setIsOverflowOpen(false);
+        }
+        return;
+      }
+
+      const adjustedWidth = currentNavNode.offsetWidth - toggleWidth - (baseVisibleCount > 0 ? gap : 0);
+      const nextVisibleCount = Math.max(
+        minimumVisible,
+        computeVisibleCount(Math.max(adjustedWidth, 0), gap)
+      );
+
+      if (nextVisibleCount !== overflowStartIndex) {
+        setOverflowStartIndex(nextVisibleCount);
+      }
+
+      if (nextVisibleCount >= NAV_LINKS.length && isOverflowOpen) {
+        setIsOverflowOpen(false);
+      }
+    };
+
+    const resizeObserver = new ResizeObserver(calculateOverflow);
+
+    if (navContainerRef.current) {
+      resizeObserver.observe(navContainerRef.current);
+    }
+
+    if (measurementContainerRef.current) {
+      resizeObserver.observe(measurementContainerRef.current);
+    }
+
+    calculateOverflow();
+    window.addEventListener('resize', calculateOverflow);
+
+    return () => {
+      resizeObserver.disconnect();
+      window.removeEventListener('resize', calculateOverflow);
+    };
+  }, [isMobileView, isOverflowOpen, overflowStartIndex]);
+
+  useEffect(() => {
+    if (!isOverflowOpen) {
+      return;
+    }
+
+    const handlePointerDown = (event: globalThis.MouseEvent | TouchEvent) => {
+      const navNode = navContainerRef.current;
+      if (navNode && !navNode.contains(event.target as Node)) {
+        setIsOverflowOpen(false);
+      }
+    };
+
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsOverflowOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handlePointerDown);
+    document.addEventListener('touchstart', handlePointerDown);
+    document.addEventListener('keydown', handleEscape);
+
+    return () => {
+      document.removeEventListener('mousedown', handlePointerDown);
+      document.removeEventListener('touchstart', handlePointerDown);
+      document.removeEventListener('keydown', handleEscape);
+    };
+  }, [isOverflowOpen]);
+
+  const visibleCount = Math.min(overflowStartIndex, NAV_LINKS.length);
+  const visibleNavItems = NAV_LINKS.slice(0, visibleCount);
+  const overflowNavItems = NAV_LINKS.slice(visibleCount);
+  const overflowMenuId = 'nav-overflow-menu';
+
+  measurementItemRefs.current.length = NAV_LINKS.length;
 
   if (route === '/privacy') {
     return <PrivacyPolicy onNavigateHome={() => navigateTo('/')} onNavigateToTerms={() => navigateTo('/terms')} />;
@@ -360,7 +546,7 @@ const App = () => {
   }
 
   return (
-    <div className={`app${isNavOpen ? ' nav-open' : ''}`}>
+    <div className="app">
       <header className="app-header">
         <div className="brand">
           <button
@@ -378,42 +564,78 @@ const App = () => {
             </span>
           </button>
         </div>
-        <button
-          type="button"
-          className="app-header-mobile-toggle"
-          aria-expanded={isNavOpen}
-          aria-controls="primary-navigation"
-          aria-label={isNavOpen ? 'Close navigation menu' : 'Open navigation menu'}
-          onClick={() => setIsNavOpen((current) => !current)}
-        >
-          {isNavOpen ? 'Close' : 'Menu'}
-        </button>
-        <nav className="nav" id="primary-navigation">
-          <a href="#home" onClick={handleScrollToTop}>
-            Home
-          </a>
-          <a href="#exchanges" onClick={() => setIsNavOpen(false)}>
-            Exchanges
-          </a>
-          <a href="#algorithms" onClick={() => setIsNavOpen(false)}>
-            Algorithms
-          </a>
-          <a href="#connect" onClick={() => setIsNavOpen(false)}>
-            Connect
-          </a>
-          <a href="#pricing" onClick={() => setIsNavOpen(false)}>
-            Pricing
-          </a>
-          <a href="#about" onClick={() => setIsNavOpen(false)}>
-            About
-          </a>
-          <a href="#contact" onClick={() => setIsNavOpen(false)}>
-            Contact
-          </a>
-          <a href="/login" className="nav-login" onClick={handleLoginNavigation}>
-            Login
-          </a>
+        <nav className="nav" id="primary-navigation" ref={navContainerRef} aria-label="Primary">
+          {visibleNavItems.map((item) => (
+            <a
+              key={item.id}
+              href={item.href}
+              className={item.className}
+              onClick={handleNavItemSelect(item)}
+            >
+              {item.label}
+            </a>
+          ))}
+          {overflowNavItems.length > 0 && (
+            <div className="nav-overflow">
+              <button
+                type="button"
+                className={`nav-overflow-toggle${isOverflowOpen ? ' nav-overflow-toggle--open' : ''}`}
+                aria-expanded={isOverflowOpen}
+                aria-controls={overflowMenuId}
+                aria-haspopup="true"
+                aria-label={isOverflowOpen ? 'Close navigation menu' : 'Open navigation menu'}
+                onClick={() => setIsOverflowOpen((current) => !current)}
+              >
+                <span className="nav-overflow-icon" aria-hidden="true">
+                  <span />
+                  <span />
+                  <span />
+                </span>
+                <span className="sr-only">Toggle navigation menu</span>
+              </button>
+              <div
+                className={`nav-overflow-menu${isOverflowOpen ? ' nav-overflow-menu--open' : ''}`}
+                id={overflowMenuId}
+                role="menu"
+                aria-hidden={!isOverflowOpen}
+              >
+                {overflowNavItems.map((item) => (
+                  <a
+                    key={item.id}
+                    href={item.href}
+                    className={item.className ? `nav-overflow-link ${item.className}` : 'nav-overflow-link'}
+                    onClick={handleNavItemSelect(item)}
+                    role="menuitem"
+                  >
+                    {item.label}
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
         </nav>
+        <div className="nav nav-measurements" aria-hidden="true" ref={measurementContainerRef}>
+          {NAV_LINKS.map((item, index) => (
+            <a
+              key={`measurement-${item.id}`}
+              href={item.href}
+              className={item.className}
+              ref={(element) => {
+                measurementItemRefs.current[index] = element;
+              }}
+            >
+              {item.label}
+            </a>
+          ))}
+          <button type="button" className="nav-overflow-toggle" ref={measurementToggleRef}>
+            <span className="nav-overflow-icon" aria-hidden="true">
+              <span />
+              <span />
+              <span />
+            </span>
+            <span className="sr-only">Toggle navigation menu</span>
+          </button>
+        </div>
       </header>
 
       <main>
