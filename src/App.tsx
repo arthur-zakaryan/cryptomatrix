@@ -1,4 +1,4 @@
-import { FormEvent, MouseEvent, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { FormEvent, MouseEvent, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import ConnectForm from './components/ConnectForm';
 import ContactForm from './components/ContactForm';
 import ContactInformation from './components/ContactInformation';
@@ -102,6 +102,8 @@ const NAV_LINKS: NavLinkConfig[] = [
   { id: 'login', label: 'Login', href: '/login', className: 'nav-login', action: 'login' }
 ];
 
+const MARKETING_ROUTES = new Set(['/', '/terms', '/privacy']);
+
 const App = () => {
   const [route, setRoute] = useState(window.location.pathname || '/');
   const [isUserAuthenticated, setIsUserAuthenticated] = useState(false);
@@ -120,6 +122,10 @@ const App = () => {
     'Where everything is explained, nothing is remembered',
     'Curious... The mind follows what it can’t see'
   ];
+  const navLinks = useMemo(
+    () => (isUserAuthenticated ? NAV_LINKS.filter((link) => link.id !== 'login') : NAV_LINKS),
+    [isUserAuthenticated]
+  );
 
   useEffect(() => {
     const handlePopstate = () => {
@@ -131,7 +137,7 @@ const App = () => {
       setIsMobileView(mobile);
       if (!mobile) {
         setIsOverflowOpen(false);
-        setOverflowStartIndex(NAV_LINKS.length);
+        setOverflowStartIndex(navLinks.length);
       }
     };
 
@@ -142,7 +148,7 @@ const App = () => {
       window.removeEventListener('popstate', handlePopstate);
       window.removeEventListener('resize', handleResize);
     };
-  }, []);
+  }, [navLinks.length]);
 
   useEffect(() => {
     if (route === '/privacy') {
@@ -166,6 +172,10 @@ const App = () => {
       setIsOverflowOpen(false);
     }
   }, [route, isUserAuthenticated]);
+
+  useEffect(() => {
+    setOverflowStartIndex(navLinks.length);
+  }, [navLinks.length]);
 
   const navigateTo = useCallback((path: string) => {
     if (path === route) {
@@ -282,6 +292,21 @@ const App = () => {
     navigateTo('/login');
   };
 
+  const handleProfileNavigation = () => {
+    navigateTo('/user');
+  };
+
+  const handleBrandClick = () => {
+    if (route !== '/') {
+      navigateTo('/');
+      return;
+    }
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const shouldShowProfileShortcut = isUserAuthenticated && MARKETING_ROUTES.has(route);
+
   const handleNavItemSelect = useCallback(
     (item: NavLinkConfig) => (event: MouseEvent<HTMLAnchorElement>) => {
       if (item.action === 'scrollTop') {
@@ -301,13 +326,13 @@ const App = () => {
 
   useLayoutEffect(() => {
     if (!isMobileView) {
-      if (overflowStartIndex !== NAV_LINKS.length) {
-        setOverflowStartIndex(NAV_LINKS.length);
+      if (overflowStartIndex !== navLinks.length) {
+        setOverflowStartIndex(navLinks.length);
       }
       return;
     }
 
-    const minimumVisible = Math.min(MIN_VISIBLE_NAV_ITEMS, NAV_LINKS.length);
+    const minimumVisible = Math.min(MIN_VISIBLE_NAV_ITEMS, navLinks.length);
 
     const computeVisibleCount = (availableWidth: number, gap: number) => {
       if (availableWidth <= 0) {
@@ -317,7 +342,7 @@ const App = () => {
       let usedWidth = 0;
       let nextVisibleCount = minimumVisible;
 
-      for (let index = 0; index < NAV_LINKS.length; index += 1) {
+      for (let index = 0; index < navLinks.length; index += 1) {
         const itemNode = measurementItemRefs.current[index];
         if (!itemNode) {
           continue;
@@ -340,7 +365,7 @@ const App = () => {
         }
       }
 
-      return Math.min(nextVisibleCount, NAV_LINKS.length);
+      return Math.min(nextVisibleCount, navLinks.length);
     };
 
     const calculateOverflow = () => {
@@ -356,9 +381,9 @@ const App = () => {
 
       const baseVisibleCount = computeVisibleCount(currentNavNode.offsetWidth, gap);
 
-      if (baseVisibleCount === NAV_LINKS.length) {
-        if (overflowStartIndex !== NAV_LINKS.length) {
-          setOverflowStartIndex(NAV_LINKS.length);
+      if (baseVisibleCount === navLinks.length) {
+        if (overflowStartIndex !== navLinks.length) {
+          setOverflowStartIndex(navLinks.length);
         }
         if (isOverflowOpen) {
           setIsOverflowOpen(false);
@@ -376,7 +401,7 @@ const App = () => {
         setOverflowStartIndex(nextVisibleCount);
       }
 
-      if (nextVisibleCount >= NAV_LINKS.length && isOverflowOpen) {
+      if (nextVisibleCount >= navLinks.length && isOverflowOpen) {
         setIsOverflowOpen(false);
       }
     };
@@ -398,7 +423,7 @@ const App = () => {
       resizeObserver.disconnect();
       window.removeEventListener('resize', calculateOverflow);
     };
-  }, [isMobileView, isOverflowOpen, overflowStartIndex]);
+  }, [isMobileView, isOverflowOpen, overflowStartIndex, navLinks]);
 
   useEffect(() => {
     if (!isOverflowOpen) {
@@ -429,12 +454,12 @@ const App = () => {
     };
   }, [isOverflowOpen]);
 
-  const visibleCount = Math.min(overflowStartIndex, NAV_LINKS.length);
-  const visibleNavItems = NAV_LINKS.slice(0, visibleCount);
-  const overflowNavItems = NAV_LINKS.slice(visibleCount);
+  const visibleCount = Math.min(overflowStartIndex, navLinks.length);
+  const visibleNavItems = navLinks.slice(0, visibleCount);
+  const overflowNavItems = navLinks.slice(visibleCount);
   const overflowMenuId = 'nav-overflow-menu';
 
-  measurementItemRefs.current.length = NAV_LINKS.length;
+  measurementItemRefs.current.length = navLinks.length;
 
   if (route === '/privacy') {
     return <PrivacyPolicy onNavigateHome={() => navigateTo('/')} onNavigateToTerms={() => navigateTo('/terms')} />;
@@ -497,7 +522,7 @@ const App = () => {
             <button
               type="button"
               className="brand-button"
-              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              onClick={handleBrandClick}
               aria-label="Scroll to top"
             >
               <span className="brand-logo-wrapper">
@@ -559,8 +584,24 @@ const App = () => {
               </div>
             )}
           </nav>
+          {shouldShowProfileShortcut ? (
+            <button
+              type="button"
+              className="profile-session"
+              onClick={handleProfileNavigation}
+            >
+              <span className="profile-avatar" aria-hidden="true">
+                <span className="profile-avatar-initial">C</span>
+                <span className="profile-avatar-status" />
+              </span>
+              <span className="profile-session-details">
+                <span className="profile-session-label">Cryptomatrix</span>
+                <span className="profile-session-action">Return to Account</span>
+              </span>
+            </button>
+          ) : null}
           <div className="nav nav-measurements" aria-hidden="true" ref={measurementContainerRef}>
-            {NAV_LINKS.map((item, index) => (
+            {navLinks.map((item, index) => (
               <a
                 key={`measurement-${item.id}`}
                 href={item.href}
