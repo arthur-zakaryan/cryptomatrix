@@ -21,8 +21,9 @@ const LoginPage: FC<LoginPageProps> = ({ onNavigateHome, onNavigateToForgotPassw
       <header className="login-header">
         <h1>Welcome back</h1>
         <p className="login-subtitle">
-          <span>Sign in to manage automations,</span>
-          <span className="login-subtitle-line">monitor performance, and control exchange connections.</span>
+          <span className="login-subtitle-line">Sign in to manage automations,</span>
+          <span className="login-subtitle-line">monitor performance,</span>
+          <span className="login-subtitle-line">and control exchange connections.</span>
         </p>
       </header>
 
