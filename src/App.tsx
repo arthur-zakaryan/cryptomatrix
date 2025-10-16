@@ -9,6 +9,8 @@ import TermsOfUse from './components/TermsOfUse';
 import LoginPage from './components/LoginPage';
 import SignUpPage from './components/SignUpPage';
 import ForgotPasswordPage from './components/ForgotPasswordPage';
+import MatrixRain from './components/MatrixRain';
+import coinTickers from './data/coinTickers';
 import './App.css';
 
 const LinkedInIcon = () => (
@@ -73,108 +75,7 @@ const socialLinks = [
   { name: 'TikTok', href: '#', Icon: TikTokIcon }
 ];
 
-const marqueeCoins = [
-  'BTC',
-  'ETH',
-  'USDT',
-  'USDC',
-  'BNB',
-  'XRP',
-  'ADA',
-  'DOGE',
-  'SOL',
-  'TRX',
-  'DOT',
-  'MATIC',
-  'LTC',
-  'SHIB',
-  'AVAX',
-  'UNI',
-  'LINK',
-  'XLM',
-  'BCH',
-  'ETC',
-  'XMR',
-  'ALGO',
-  'VET',
-  'ATOM',
-  'FIL',
-  'ICP',
-  'APE',
-  'SAND',
-  'AXS',
-  'THETA',
-  'HBAR',
-  'EGLD',
-  'XTZ',
-  'NEAR',
-  'FLOW',
-  'CHZ',
-  'MANA',
-  'AAVE',
-  'COMP',
-  'SNX',
-  'CRV',
-  'KSM',
-  'GRT',
-  '1INCH',
-  'BAT',
-  'ZIL',
-  'ENJ',
-  'KNC',
-  'RUNE',
-  'CAKE',
-  'FTM',
-  'MINA',
-  'ZRX',
-  'CELR',
-  'ANKR',
-  'QTUM',
-  'KAVA',
-  'AR',
-  'LRC',
-  'OMG',
-  'HOT',
-  'NANO',
-  'DASH',
-  'WAVES',
-  'TFUEL',
-  'RVN',
-  'IOST',
-  'BTT',
-  'ZEN',
-  'SC',
-  'STX',
-  'ONE',
-  'ROSE',
-  'CELO',
-  'BAL',
-  'YFI',
-  'SUSHI',
-  'GALA',
-  'ILV',
-  'LDO',
-  'DYDX',
-  'ARPA',
-  'MASK',
-  'OP',
-  'ARB',
-  'IMX',
-  'GNO',
-  'ENS',
-  'XDC',
-  'KAS',
-  'PEPE',
-  'FLOKI',
-  'BABYDOGE',
-  'WIF',
-  'BONK',
-  'TURBO',
-  'HOGE',
-  'AIDOGE',
-  'MEME',
-  'POPCAT'
-];
+const marqueeCoins = coinTickers;
 
 const brandMarqueeMessage = 'cryptomatrix.ai — a company of Cali Group Conglomerate';
 
@@ -547,153 +448,155 @@ const App = () => {
 
   return (
     <div className="app">
-      <header className="app-header">
-        <div className="brand">
-          <button
-            type="button"
-            className="brand-button"
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            aria-label="Scroll to top"
-          >
-            <span className="brand-logo-wrapper">
-              <span className="brand-logo" role="img" aria-label="Cryptomatrix logo" />
-            </span>
-            <span className="brand-text">
-              <span className="brand-mark">cryptomatrix.ai</span>
-              <span className="brand-tagline">Automated trading that works while you sleep</span>
-            </span>
-          </button>
-        </div>
-        <nav className="nav" id="primary-navigation" ref={navContainerRef} aria-label="Primary">
-          {visibleNavItems.map((item) => (
-            <a
-              key={item.id}
-              href={item.href}
-              className={item.className}
-              onClick={handleNavItemSelect(item)}
+      <MatrixRain />
+      <div className="app-content">
+        <header className="app-header">
+          <div className="brand">
+            <button
+              type="button"
+              className="brand-button"
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              aria-label="Scroll to top"
             >
-              {item.label}
-            </a>
-          ))}
-          {overflowNavItems.length > 0 && (
-            <div className="nav-overflow">
-              <button
-                type="button"
-                className={`nav-overflow-toggle${isOverflowOpen ? ' nav-overflow-toggle--open' : ''}`}
-                aria-expanded={isOverflowOpen}
-                aria-controls={overflowMenuId}
-                aria-haspopup="true"
-                aria-label={isOverflowOpen ? 'Close navigation menu' : 'Open navigation menu'}
-                onClick={() => setIsOverflowOpen((current) => !current)}
+              <span className="brand-logo-wrapper">
+                <span className="brand-logo" role="img" aria-label="Cryptomatrix logo" />
+              </span>
+              <span className="brand-text">
+                <span className="brand-mark">cryptomatrix.ai</span>
+                <span className="brand-tagline">Automated trading that works while you sleep</span>
+              </span>
+            </button>
+          </div>
+          <nav className="nav" id="primary-navigation" ref={navContainerRef} aria-label="Primary">
+            {visibleNavItems.map((item) => (
+              <a
+                key={item.id}
+                href={item.href}
+                className={item.className}
+                onClick={handleNavItemSelect(item)}
               >
-                <span className="nav-overflow-icon" aria-hidden="true">
-                  <span />
-                  <span />
-                  <span />
-                </span>
-                <span className="sr-only">Toggle navigation menu</span>
-              </button>
-              <div
-                className={`nav-overflow-menu${isOverflowOpen ? ' nav-overflow-menu--open' : ''}`}
-                id={overflowMenuId}
-                role="menu"
-                aria-hidden={!isOverflowOpen}
-              >
-                {overflowNavItems.map((item) => (
-                  <a
-                    key={item.id}
-                    href={item.href}
-                    className={item.className ? `nav-overflow-link ${item.className}` : 'nav-overflow-link'}
-                    onClick={handleNavItemSelect(item)}
-                    role="menuitem"
-                  >
-                    {item.label}
-                  </a>
-                ))}
-              </div>
-            </div>
-          )}
-        </nav>
-        <div className="nav nav-measurements" aria-hidden="true" ref={measurementContainerRef}>
-          {NAV_LINKS.map((item, index) => (
-            <a
-              key={`measurement-${item.id}`}
-              href={item.href}
-              className={item.className}
-              ref={(element) => {
-                measurementItemRefs.current[index] = element;
-              }}
-            >
-              {item.label}
-            </a>
-          ))}
-          <button type="button" className="nav-overflow-toggle" ref={measurementToggleRef}>
-            <span className="nav-overflow-icon" aria-hidden="true">
-              <span />
-              <span />
-              <span />
-            </span>
-            <span className="sr-only">Toggle navigation menu</span>
-          </button>
-        </div>
-      </header>
-
-      <main>
-        <section className="hero" id="home">
-          <div className="hero-content">
-            <div className="hero-content-inner">
-              <div className="brand-marquee" aria-label="Cryptomatrix parent company banner">
-                <div className="brand-marquee-track">
-                  {Array.from({ length: 4 }).map((_, index) => (
-                    <span key={`brand-marquee-${index}`} className="brand-marquee-text">
-                      {brandMarqueeMessage}
-                    </span>
+                {item.label}
+              </a>
+            ))}
+            {overflowNavItems.length > 0 && (
+              <div className="nav-overflow">
+                <button
+                  type="button"
+                  className={`nav-overflow-toggle${isOverflowOpen ? ' nav-overflow-toggle--open' : ''}`}
+                  aria-expanded={isOverflowOpen}
+                  aria-controls={overflowMenuId}
+                  aria-haspopup="true"
+                  aria-label={isOverflowOpen ? 'Close navigation menu' : 'Open navigation menu'}
+                  onClick={() => setIsOverflowOpen((current) => !current)}
+                >
+                  <span className="nav-overflow-icon" aria-hidden="true">
+                    <span />
+                    <span />
+                    <span />
+                  </span>
+                  <span className="sr-only">Toggle navigation menu</span>
+                </button>
+                <div
+                  className={`nav-overflow-menu${isOverflowOpen ? ' nav-overflow-menu--open' : ''}`}
+                  id={overflowMenuId}
+                  role="menu"
+                  aria-hidden={!isOverflowOpen}
+                >
+                  {overflowNavItems.map((item) => (
+                    <a
+                      key={item.id}
+                      href={item.href}
+                      className={item.className ? `nav-overflow-link ${item.className}` : 'nav-overflow-link'}
+                      onClick={handleNavItemSelect(item)}
+                      role="menuitem"
+                    >
+                      {item.label}
+                    </a>
                   ))}
                 </div>
               </div>
-              <div className="hero-content-text">
-                <h1>
-                  Intelligent <span className="gradient-text">crypto trading</span> for modern investors
-                </h1>
-                <p>
-                  Connect your exchange accounts securely with API keys and let our bots execute strategies 24/7. You keep
-                  full control while we handle the trades.
-                </p>
-                <a className="cta-button" href="#contact">
-                  Get Started
-                </a>
-              </div>
-            </div>
+            )}
+          </nav>
+          <div className="nav nav-measurements" aria-hidden="true" ref={measurementContainerRef}>
+            {NAV_LINKS.map((item, index) => (
+              <a
+                key={`measurement-${item.id}`}
+                href={item.href}
+                className={item.className}
+                ref={(element) => {
+                  measurementItemRefs.current[index] = element;
+                }}
+              >
+                {item.label}
+              </a>
+            ))}
+            <button type="button" className="nav-overflow-toggle" ref={measurementToggleRef}>
+              <span className="nav-overflow-icon" aria-hidden="true">
+                <span />
+                <span />
+                <span />
+              </span>
+              <span className="sr-only">Toggle navigation menu</span>
+            </button>
           </div>
-          <div className="hero-visual">
-            <div className="orbital" aria-hidden="true">
-              <div className="orbital-ring orbital-ring--one">
-                <span className="orbital-planet" />
-              </div>
-              <div className="orbital-ring orbital-ring--two">
-                <span className="orbital-planet" />
-              </div>
-              <div className="orbital-ring orbital-ring--three">
-                <span className="orbital-planet" />
-              </div>
-            </div>
-            <div className="orbital-stat" tabIndex={0} role="group" aria-label="Live active earners">
-              <span className="orbital-stat-value">{formatActiveCustomers(activeCustomers)}</span>
-              <p className="orbital-stat-caption">Earners siphoning a fortune from crypto volatility inside Cryptomatrix right now</p>
-            </div>
-          </div>
-          <div className="orbital-marquee" aria-label="Top cryptocurrencies and memecoins">
-            <div className="orbital-marquee-track">
-              {marqueeCoins.concat(marqueeCoins).map((coin, index) => (
-                <span key={`orbital-coin-${index}`} className="orbital-marquee-coin" tabIndex={0}>
-                  {coin}
-                </span>
-              ))}
-            </div>
-          </div>
-        </section>
+        </header>
 
-        <section id="exchanges" className="exchanges-section">
+        <main>
+          <section className="hero" id="home">
+            <div className="hero-content">
+              <div className="hero-content-inner">
+                <div className="brand-marquee" aria-label="Cryptomatrix parent company banner">
+                  <div className="brand-marquee-track">
+                    {Array.from({ length: 4 }).map((_, index) => (
+                      <span key={`brand-marquee-${index}`} className="brand-marquee-text">
+                        {brandMarqueeMessage}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                <div className="hero-content-text">
+                  <h1>
+                    Intelligent <span className="gradient-text">crypto trading</span> for modern investors
+                  </h1>
+                  <p>
+                    Connect your exchange accounts securely with API keys and let our bots execute strategies 24/7. You keep
+                    full control while we handle the trades.
+                  </p>
+                  <a className="cta-button" href="#contact">
+                    Get Started
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div className="hero-visual">
+              <div className="orbital" aria-hidden="true">
+                <div className="orbital-ring orbital-ring--one">
+                  <span className="orbital-planet" />
+                </div>
+                <div className="orbital-ring orbital-ring--two">
+                  <span className="orbital-planet" />
+                </div>
+                <div className="orbital-ring orbital-ring--three">
+                  <span className="orbital-planet" />
+                </div>
+              </div>
+              <div className="orbital-stat" tabIndex={0} role="group" aria-label="Live active earners">
+                <span className="orbital-stat-value">{formatActiveCustomers(activeCustomers)}</span>
+                <p className="orbital-stat-caption">Earners siphoning a fortune from crypto volatility inside Cryptomatrix right now</p>
+              </div>
+            </div>
+            <div className="orbital-marquee" aria-label="Top cryptocurrencies and memecoins">
+              <div className="orbital-marquee-track">
+                {marqueeCoins.concat(marqueeCoins).map((coin, index) => (
+                  <span key={`orbital-coin-${index}`} className="orbital-marquee-coin" tabIndex={0}>
+                    {coin}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <section id="exchanges" className="exchanges-section">
           <h2 className="section-title gradient-text">Supported Exchanges</h2>
           <p className="section-intro">Trade on top exchanges through a single secure interface where API keys stay encrypted and under your control</p>
           <ExchangesShowcase />
@@ -879,7 +782,8 @@ const App = () => {
         </div>
       </footer>
     </div>
-  );
+  </div>
+);
 };
 
 export default App;
