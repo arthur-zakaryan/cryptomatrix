@@ -9,6 +9,7 @@ import TermsOfUse from './components/TermsOfUse';
 import LoginPage from './components/LoginPage';
 import SignUpPage from './components/SignUpPage';
 import ForgotPasswordPage from './components/ForgotPasswordPage';
+import UserAccountPage from './components/UserAccountPage';
 import MatrixRain from './components/MatrixRain';
 import coinTickers from './data/coinTickers';
 import './App.css';
@@ -103,6 +104,7 @@ const NAV_LINKS: NavLinkConfig[] = [
 
 const App = () => {
   const [route, setRoute] = useState(window.location.pathname || '/');
+  const [isUserAuthenticated, setIsUserAuthenticated] = useState(false);
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [newsletterSubmitted, setNewsletterSubmitted] = useState(false);
   const [activeCustomers, setActiveCustomers] = useState(12000);
@@ -149,11 +151,21 @@ const App = () => {
       document.title = 'Terms of Use | Cryptomatrix';
     } else if (route === '/login') {
       document.title = 'Login | Cryptomatrix';
+    } else if (route === '/user') {
+      document.title = 'Dashboard | Cryptomatrix';
     } else {
       document.title = 'Cryptomatrix';
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [route]);
+
+  useEffect(() => {
+    if (route === '/user' && !isUserAuthenticated) {
+      window.history.replaceState({}, '', '/login');
+      setRoute('/login');
+      setIsOverflowOpen(false);
+    }
+  }, [route, isUserAuthenticated]);
 
   const navigateTo = useCallback((path: string) => {
     if (path === route) {
@@ -243,6 +255,7 @@ const App = () => {
   };
 
   const handleReturnToLogin = () => {
+    setIsUserAuthenticated(false);
     navigateTo('/login');
   };
 
@@ -252,6 +265,21 @@ const App = () => {
 
   const navigateToPrivacy = () => {
     navigateTo('/privacy');
+  };
+
+  const handleLoginSuccess = () => {
+    setIsUserAuthenticated(true);
+    navigateTo('/user');
+  };
+
+  const handleSignUpComplete = () => {
+    setIsUserAuthenticated(true);
+    navigateTo('/user');
+  };
+
+  const handleLogout = () => {
+    setIsUserAuthenticated(false);
+    navigateTo('/login');
   };
 
   const handleNavItemSelect = useCallback(
@@ -422,6 +450,7 @@ const App = () => {
         onNavigateHome={() => navigateTo('/')}
         onNavigateToForgotPassword={handleForgotPasswordNavigation}
         onNavigateToSignUp={handleSignUpNavigation}
+        onLoginSuccess={handleLoginSuccess}
       />
     );
   }
@@ -433,6 +462,7 @@ const App = () => {
         onNavigateToLogin={handleReturnToLogin}
         onNavigateToTerms={navigateToTerms}
         onNavigateToPrivacy={navigateToPrivacy}
+        onSignUpComplete={handleSignUpComplete}
       />
     );
   }
@@ -442,6 +472,18 @@ const App = () => {
       <ForgotPasswordPage
         onNavigateHome={() => navigateTo('/')}
         onNavigateBackToLogin={handleReturnToLogin}
+      />
+    );
+  }
+
+  if (route === '/user') {
+    if (!isUserAuthenticated) {
+      return null;
+    }
+    return (
+      <UserAccountPage
+        onNavigateHome={() => navigateTo('/')}
+        onLogout={handleLogout}
       />
     );
   }

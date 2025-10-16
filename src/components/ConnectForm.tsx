@@ -128,7 +128,7 @@ const ConnectForm = () => {
   };
 
   return (
-    <div className="card connect-card">
+    <div className="card connect-card" tabIndex={0}>
       <h3>Connect Your Exchange</h3>
       <p className="card-intro">Enter your API credentials to link an exchange account</p>
       <ul className="connect-highlights">

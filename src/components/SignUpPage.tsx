@@ -220,9 +220,16 @@ interface SignUpPageProps {
   onNavigateToLogin: () => void;
   onNavigateToTerms: () => void;
   onNavigateToPrivacy: () => void;
+  onSignUpComplete: () => void;
 }
 
-const SignUpPage: FC<SignUpPageProps> = ({ onNavigateHome, onNavigateToLogin, onNavigateToTerms, onNavigateToPrivacy }) => {
+const SignUpPage: FC<SignUpPageProps> = ({
+  onNavigateHome,
+  onNavigateToLogin,
+  onNavigateToTerms,
+  onNavigateToPrivacy,
+  onSignUpComplete
+}) => {
   const [countryInput, setCountryInput] = useState('');
   const [showCountrySuggestions, setShowCountrySuggestions] = useState(false);
   const [dobValue, setDobValue] = useState('');
@@ -303,6 +310,7 @@ const SignUpPage: FC<SignUpPageProps> = ({ onNavigateHome, onNavigateToLogin, on
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    onSignUpComplete();
   };
 
   const handleCountryChange = (event: ChangeEvent<HTMLInputElement>) => {
