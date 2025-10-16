@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import coinTickers from '../data/coinTickers';
 
 type MatrixColumn = {
@@ -10,7 +10,9 @@ type MatrixColumn = {
   items: string[];
 };
 
-const MATRIX_COLUMNS = 22;
+const DESKTOP_COLUMNS = 22;
+const MOBILE_COLUMNS = 12;
+const MOBILE_BREAKPOINT = 640;
 const MIN_ITEMS_PER_COLUMN = 18;
 const MAX_ITEMS_PER_COLUMN = 30;
 
@@ -21,12 +23,14 @@ const pickCoinSequence = (length: number, startOffset: number) => {
   });
 };
 
-const generateColumn = (index: number, total: number): MatrixColumn => {
+const generateColumn = (index: number, total: number, isMobile: boolean): MatrixColumn => {
   const leftPosition = ((index + 0.5) / total) * 100;
   const horizontalJitter = (Math.random() * 2 - 1) / total;
   const left = `${Math.min(98, Math.max(2, leftPosition + horizontalJitter * 100))}%`;
 
-  const durationSeconds = 22 + Math.random() * 16;
+  const baseDuration = isMobile ? 32 : 22;
+  const durationRange = isMobile ? 20 : 16;
+  const durationSeconds = baseDuration + Math.random() * durationRange;
   const duration = `${durationSeconds}s`;
   const delay = `${Math.random() * -durationSeconds}s`;
   const fontSize = `${13 + Math.random() * 6}px`;
@@ -45,9 +49,32 @@ const generateColumn = (index: number, total: number): MatrixColumn => {
 };
 
 const MatrixRain = () => {
-  const columns = useMemo(() => {
-    return Array.from({ length: MATRIX_COLUMNS }, (_, index) => generateColumn(index, MATRIX_COLUMNS));
+  const getIsMobile = () => {
+    if (typeof window === 'undefined') {
+      return false;
+    }
+    return window.innerWidth <= MOBILE_BREAKPOINT;
+  };
+
+  const [isMobile, setIsMobile] = useState(getIsMobile);
+  const [columnCount, setColumnCount] = useState(() => {
+    return getIsMobile() ? MOBILE_COLUMNS : DESKTOP_COLUMNS;
+  });
+
+  useEffect(() => {
+    const handleResize = () => {
+      const mobile = window.innerWidth <= MOBILE_BREAKPOINT;
+      setIsMobile(mobile);
+      setColumnCount(mobile ? MOBILE_COLUMNS : DESKTOP_COLUMNS);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  const columns = useMemo(() => {
+    return Array.from({ length: columnCount }, (_, index) => generateColumn(index, columnCount, isMobile));
+  }, [columnCount, isMobile]);
 
   return (
     <div className="matrix-rain" aria-hidden="true">
