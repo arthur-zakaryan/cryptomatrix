@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import { FC, useEffect, useMemo, useRef, useState } from 'react';
 import ConnectForm from './ConnectForm';
 
 type UserAccountPageProps = {
@@ -13,9 +13,11 @@ type Metric = {
   tone: 'positive' | 'neutral' | 'negative';
 };
 
+type BotStatus = 'Running' | 'Paused' | 'Stop' | 'Delete';
+
 type Bot = {
   name: string;
-  status: 'Running' | 'Paused';
+  status: BotStatus;
   exchange: string;
   pair: string;
   allocation: string;
@@ -36,7 +38,7 @@ const accountMetrics: Metric[] = [
   { label: 'Risk Score', value: 'Moderate', change: '70% guardrails active', tone: 'neutral' }
 ];
 
-const runningBots: Bot[] = [
+const initialBots: Bot[] = [
   { name: 'Gamma Scalper', status: 'Running', exchange: 'Binance', pair: 'BTC/USDT', allocation: '$35k', runtime: 'Live 14h', pnl: '+$4,320', pnlTone: 'positive' },
   { name: 'Arb Matrix', status: 'Running', exchange: 'Kraken', pair: 'ETH/EUR', allocation: '$20k', runtime: 'Live 3d 2h', pnl: '+$9,780', pnlTone: 'positive' },
   { name: 'Momentum Stack', status: 'Paused', exchange: 'Coinbase', pair: 'SOL/USD', allocation: '$12k', runtime: 'Paused 1h', pnl: '+$1,260', pnlTone: 'positive' }
@@ -65,6 +67,60 @@ const notifications = [
 ];
 
 const UserAccountPage: FC<UserAccountPageProps> = ({ onNavigateHome, onLogout }) => {
+  const [bots, setBots] = useState<Bot[]>(initialBots);
+  const [openStatusMenu, setOpenStatusMenu] = useState<string | null>(null);
+  const statusAnchorsRef = useRef<Record<string, HTMLButtonElement | null>>({});
+  const statusMenuRefs = useRef<Record<string, HTMLUListElement | null>>({});
+  const statusOptions = useMemo<BotStatus[]>(() => ['Running', 'Paused', 'Stop', 'Delete'], []);
+
+  const handleStatusMenuToggle = (botName: string) => () => {
+    setOpenStatusMenu((current) => (current === botName ? null : botName));
+  };
+
+  const handleStatusChange = (botName: string, status: BotStatus) => () => {
+    setBots((current) =>
+      current.map((bot) => (bot.name === botName ? { ...bot, status } : bot))
+    );
+    setOpenStatusMenu(null);
+  };
+
+  useEffect(() => {
+    if (!openStatusMenu) {
+      return;
+    }
+
+    const handlePointerDown = (event: Event) => {
+      const anchor = statusAnchorsRef.current[openStatusMenu];
+      const menu = statusMenuRefs.current[openStatusMenu];
+
+      if (anchor && anchor.contains(event.target as Node)) {
+        return;
+      }
+
+      if (menu && menu.contains(event.target as Node)) {
+        return;
+      }
+
+      setOpenStatusMenu(null);
+    };
+
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setOpenStatusMenu(null);
+      }
+    };
+
+    document.addEventListener('mousedown', handlePointerDown);
+    document.addEventListener('touchstart', handlePointerDown);
+    document.addEventListener('keydown', handleEscape);
+
+    return () => {
+      document.removeEventListener('mousedown', handlePointerDown);
+      document.removeEventListener('touchstart', handlePointerDown);
+      document.removeEventListener('keydown', handleEscape);
+    };
+  }, [openStatusMenu]);
+
   return (
     <div className="user-account-page">
       <header className="user-account-header">
@@ -107,13 +163,54 @@ const UserAccountPage: FC<UserAccountPageProps> = ({ onNavigateHome, onLogout })
                 <span className="user-panel-subtitle">Live performance, uptime, and guardrails per bot</span>
               </header>
               <ul className="user-bot-list">
-                {runningBots.map(({ name, status, exchange, pair, allocation, runtime, pnl, pnlTone }) => (
+                {bots.map(({ name, status, exchange, pair, allocation, runtime, pnl, pnlTone }) => (
                   <li key={name} className="user-bot-row">
                     <div className="user-bot-main">
                       <span className="user-bot-name">{name}</span>
-                      <div className="user-bot-main-meta">
+                      <div
+                        className="user-bot-main-meta"
+                      >
                         <span className={`user-bot-pnl user-bot-pnl--${pnlTone}`}>{pnl}</span>
-                        <span className={`user-bot-status user-bot-status--${status.toLowerCase()}`}>{status}</span>
+                        <button
+                          type="button"
+                          className={`user-bot-status user-bot-status--${status.toLowerCase()}`}
+                          onClick={handleStatusMenuToggle(name)}
+                          aria-haspopup="true"
+                          aria-expanded={openStatusMenu === name}
+                          ref={(element) => {
+                            statusAnchorsRef.current[name] = element;
+                          }}
+                        >
+                          <span>{status}</span>
+                          <span className="user-bot-status-caret" aria-hidden="true" />
+                        </button>
+                        {openStatusMenu === name ? (
+                          <ul
+                            className="user-bot-status-menu user-bot-status-menu--visible"
+                            role="menu"
+                            style={{
+                              width: statusAnchorsRef.current[name]?.offsetWidth ?? undefined
+                            }}
+                            ref={(element) => {
+                              statusMenuRefs.current[name] = element;
+                            }}
+                          >
+                            {statusOptions.map((option) => (
+                              <li key={`${name}-${option}`} role="none">
+                                <button
+                                  type="button"
+                                  role="menuitem"
+                                  className={`user-bot-status-option${
+                                    option === status ? ' user-bot-status-option--active' : ''
+                                  }`}
+                                  onClick={handleStatusChange(name, option)}
+                                >
+                                  {option}
+                                </button>
+                              </li>
+                            ))}
+                          </ul>
+                        ) : null}
                       </div>
                     </div>
                     <div className="user-bot-meta">
@@ -133,11 +230,8 @@ const UserAccountPage: FC<UserAccountPageProps> = ({ onNavigateHome, onLogout })
                 <span className="user-panel-subtitle">Guard your infrastructure and capital</span>
               </header>
               <ul className="user-checklist">
-                {checklist.map(({ label, completed }) => (
+                {checklist.map(({ label }) => (
                   <li key={label} className="user-checklist-item">
-                    <span className={`user-checklist-status ${completed ? 'user-checklist-status--done' : 'user-checklist-status--todo'}`} aria-hidden="true">
-                      {completed ? '✓' : '•'}
-                    </span>
                     <span>{label}</span>
                   </li>
                 ))}
@@ -161,16 +255,8 @@ const UserAccountPage: FC<UserAccountPageProps> = ({ onNavigateHome, onLogout })
             </aside>
           </div>
 
-          <aside className="user-grid-sidebar">
-            <div className="user-panel user-panel--sticky card" tabIndex={0}>
-              <header className="user-panel-header">
-                <h2>Connect an exchange</h2>
-                <span className="user-panel-subtitle">
-                  Activate read + trade APIs to deploy bots. Keys stay encrypted client-side.
-                </span>
-              </header>
-              <ConnectForm />
-            </div>
+          <aside className="user-grid-sidebar connect-sidebar">
+            <ConnectForm />
           </aside>
         </section>
       </main>
