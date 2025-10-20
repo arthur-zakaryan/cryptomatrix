@@ -10,6 +10,8 @@ import LoginPage from './components/LoginPage';
 import SignUpPage from './components/SignUpPage';
 import ForgotPasswordPage from './components/ForgotPasswordPage';
 import UserAccountPage from './components/UserAccountPage';
+import ForumPage from './components/ForumPage';
+import CoinStudioPage from './components/CoinStudioPage';
 import MatrixRain from './components/MatrixRain';
 import coinTickers from './data/coinTickers';
 import './App.css';
@@ -96,13 +98,15 @@ const NAV_LINKS: NavLinkConfig[] = [
   { id: 'exchanges', label: 'Exchanges', href: '#exchanges' },
   { id: 'algorithms', label: 'Algorithms', href: '#algorithms' },
   { id: 'connect', label: 'Connect', href: '#connect' },
+  { id: 'crypto-studio', label: 'Crypto Studio', href: '/crypto-studio' },
   { id: 'pricing', label: 'Pricing', href: '#pricing' },
   { id: 'about', label: 'About', href: '#about' },
   { id: 'contact', label: 'Contact', href: '#contact' },
+  { id: 'forum', label: 'Forum', href: '/forum' },
   { id: 'login', label: 'Login', href: '/login', className: 'nav-login', action: 'login' }
 ];
 
-const MARKETING_ROUTES = new Set(['/', '/terms', '/privacy']);
+const MARKETING_ROUTES = new Set(['/', '/terms', '/privacy', '/forum', '/crypto-studio', '/coin-studio']);
 
 const App = () => {
   const [route, setRoute] = useState(window.location.pathname || '/');
@@ -159,6 +163,10 @@ const App = () => {
       document.title = 'Login | Cryptomatrix';
     } else if (route === '/user') {
       document.title = 'Dashboard | Cryptomatrix';
+    } else if (route === '/crypto-studio' || route === '/coin-studio') {
+      document.title = 'Crypto Studio | Cryptomatrix';
+    } else if (route === '/forum') {
+      document.title = 'Forum | Cryptomatrix';
     } else {
       document.title = 'Cryptomatrix';
     }
@@ -172,6 +180,13 @@ const App = () => {
       setIsOverflowOpen(false);
     }
   }, [route, isUserAuthenticated]);
+
+  useEffect(() => {
+    if (route === '/coin-studio') {
+      window.history.replaceState({}, '', '/crypto-studio');
+      setRoute('/crypto-studio');
+    }
+  }, [route]);
 
   useEffect(() => {
     setOverflowStartIndex(navLinks.length);
@@ -316,6 +331,12 @@ const App = () => {
 
       if (item.action === 'login') {
         handleLoginNavigation(event);
+        return;
+      }
+
+      if (item.href.startsWith('/')) {
+        event.preventDefault();
+        navigateTo(item.href);
         return;
       }
 
@@ -497,6 +518,34 @@ const App = () => {
       <ForgotPasswordPage
         onNavigateHome={() => navigateTo('/')}
         onNavigateBackToLogin={handleReturnToLogin}
+      />
+    );
+  }
+
+  if (route === '/forum') {
+    return (
+      <ForumPage
+        onNavigateHome={() => navigateTo('/')}
+        onNavigateToContact={() => {
+          navigateTo('/');
+          window.setTimeout(() => {
+            document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' });
+          }, 60);
+        }}
+      />
+    );
+  }
+
+  if (route === '/crypto-studio' || route === '/coin-studio') {
+    return (
+      <CoinStudioPage
+        onNavigateHome={() => navigateTo('/')}
+        onNavigateToContact={() => {
+          navigateTo('/');
+          window.setTimeout(() => {
+            document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' });
+          }, 60);
+        }}
       />
     );
   }
