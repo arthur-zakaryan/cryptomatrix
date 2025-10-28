@@ -159,8 +159,9 @@ const ConnectForm = ({ onConnectionLog }: ConnectFormProps) => {
           data?.message ||
           (Array.isArray(data?.error) ? data.error.join(' | ') : null) ||
           'Unable to validate credentials with Kraken.';
+        setStatus({ type: 'error', message });
         onConnectionLog?.({ status: 'error', message, details: data });
-        throw new Error(message);
+        return;
       }
 
       const message = data?.message || 'Credentials validated with Kraken (no order executed).';
@@ -175,6 +176,7 @@ const ConnectForm = ({ onConnectionLog }: ConnectFormProps) => {
       const message = error instanceof Error ? error.message : 'Unexpected error contacting Kraken.';
       setStatus({ type: 'error', message });
       onConnectionLog?.({ status: 'error', message, details: error instanceof Error ? error.stack : error });
+      return;
     } finally {
       setLoading(false);
     }
