@@ -4,7 +4,7 @@ Cryptomatrix is a marketing site for an automated crypto trading platform. It sh
 
 ## Features
 - Hero section outlining the value proposition for automated crypto trading.
-- Secure Connect form where prospects can submit exchange API credentials to start onboarding.
+- Secure Connect form that now validates Kraken API credentials via an authenticated proxy (no live order is placed thanks to `validate=true`).
 - Exchanges showcase highlighting partner venues and trading coverage.
 - Contact form and desk details for around-the-clock support.
 - Engaging "About Us" section aimed at recruiting contributors and collaborators.
@@ -19,16 +19,24 @@ Cryptomatrix is a marketing site for an automated crypto trading platform. It sh
    ```bash
    npm install
    ```
-2. **Start the development server**
+2. **Run the Kraken proxy (required for Secure Connect)**
+   ```bash
+   npm run server
+   ```
+   The proxy starts on port `3001` by default and forwards signed requests to Kraken.
+3. **Start the Vite development server**
    ```bash
    npm run dev
    ```
-3. Open the printed local URL in your browser to explore the experience.
+4. Open the printed local URL in your browser to explore the experience. Keep both processes running so the `/api/kraken/connect` endpoint remains available.
 
 ## Available Scripts
 - `npm run dev` – start Vite in development mode with hot reloading.
+- `npm run server` – launch the Express proxy that signs requests to Kraken’s REST API.
 - `npm run build` – generate the production build.
 - `npm run preview` – serve the build locally for verification.
+
+> **Security note:** Always use exchange keys with withdrawal access disabled when testing. The proxy never stores credentials, but it relays them to Kraken solely to validate connectivity.
 
 ## Project Structure
 ```

@@ -1,4 +1,4 @@
-import { FC, useEffect, useMemo, useRef, useState } from 'react';
+import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import ConnectForm from './ConnectForm';
 
 type UserAccountPageProps = {
@@ -29,6 +29,14 @@ type Bot = {
 type ChecklistItem = {
   label: string;
   completed: boolean;
+};
+
+type ConnectionLogEntry = {
+  id: string;
+  timestamp: string;
+  status: 'success' | 'error';
+  message: string;
+  details: string | null;
 };
 
 const accountMetrics: Metric[] = [
@@ -72,6 +80,7 @@ const UserAccountPage: FC<UserAccountPageProps> = ({ onNavigateHome, onLogout })
   const statusAnchorsRef = useRef<Record<string, HTMLButtonElement | null>>({});
   const statusMenuRefs = useRef<Record<string, HTMLUListElement | null>>({});
   const statusOptions = useMemo<BotStatus[]>(() => ['Running', 'Paused', 'Stop', 'Delete'], []);
+  const [connectionLogs, setConnectionLogs] = useState<ConnectionLogEntry[]>([]);
 
   const handleStatusMenuToggle = (botName: string) => () => {
     setOpenStatusMenu((current) => (current === botName ? null : botName));
@@ -83,6 +92,26 @@ const UserAccountPage: FC<UserAccountPageProps> = ({ onNavigateHome, onLogout })
     );
     setOpenStatusMenu(null);
   };
+
+  const appendConnectionLog = useCallback((log: { status: 'success' | 'error'; message: string; details?: unknown }) => {
+    const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    const details =
+      typeof log.details === 'string'
+        ? log.details
+        : log.details
+        ? JSON.stringify(log.details, null, 2)
+        : null;
+    setConnectionLogs((current) => [
+      {
+        id: `${Date.now()}-${Math.random().toString(16).slice(2, 8)}`,
+        timestamp,
+        status: log.status,
+        message: log.message,
+        details
+      },
+      ...current
+    ].slice(0, 12));
+  }, []);
 
   useEffect(() => {
     if (!openStatusMenu) {
@@ -256,9 +285,36 @@ const UserAccountPage: FC<UserAccountPageProps> = ({ onNavigateHome, onLogout })
           </div>
 
           <aside className="user-grid-sidebar connect-sidebar">
-            <ConnectForm />
+            <ConnectForm onConnectionLog={appendConnectionLog} />
           </aside>
         </section>
+
+        {connectionLogs.length > 0 && (
+          <section className="user-panel card connection-panel" tabIndex={0} aria-live="polite">
+            <header className="user-panel-header">
+              <h2>Connection activity</h2>
+              <span className="user-panel-subtitle">Latest secure connect attempts across exchanges</span>
+            </header>
+            <ul className="connection-log-list">
+              {connectionLogs.map((log) => (
+                <li key={log.id} className={`connection-log-item connection-log-item--${log.status}`}>
+                  <div className="connection-log-item-header">
+                    <span className={`connection-log-status connection-log-status--${log.status}`}>
+                      {log.status === 'success' ? 'Validated' : 'Failed'}
+                    </span>
+                    <span className="connection-log-entry-time">{log.timestamp}</span>
+                  </div>
+                  <p className="connection-log-entry-message">{log.message}</p>
+                  {log.details && (
+                    <pre className="connection-log-details">
+                      {log.details}
+                    </pre>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
       </main>
     </div>
   );

@@ -1,4 +1,4 @@
-import { FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 
 type ConnectFormState = {
   apiKey: string;
@@ -8,6 +8,10 @@ type ConnectFormState = {
 const initialConnectState: ConnectFormState = {
   apiKey: '',
   apiSecret: ''
+};
+
+type ConnectFormProps = {
+  onConnectionLog?: (entry: { status: 'success' | 'error'; message: string; details?: unknown }) => void;
 };
 
 const ShieldIcon = () => (
@@ -106,25 +110,74 @@ const connectHighlights = [
   }
 ];
 
-const ConnectForm = () => {
+const ConnectForm = ({ onConnectionLog }: ConnectFormProps) => {
   const [formState, setFormState] = useState(initialConnectState);
-  const [submitted, setSubmitted] = useState(false);
+  const [status, setStatus] = useState<{ type: 'idle' | 'success' | 'error'; message: string }>({
+    type: 'idle',
+    message: ''
+  });
+  const [loading, setLoading] = useState(false);
   const [visibility, setVisibility] = useState({ apiKey: false, apiSecret: false });
 
-  const handleChange =
-    (field: keyof ConnectFormState) => (event: React.ChangeEvent<HTMLInputElement>) => {
-      setFormState({ ...formState, [field]: event.target.value });
-    };
+  const handleChange = (field: keyof ConnectFormState) => (event: ChangeEvent<HTMLInputElement>) => {
+    setFormState({ ...formState, [field]: event.target.value });
+  };
 
   const toggleVisibility = (field: keyof ConnectFormState) => () => {
     setVisibility((prev) => ({ ...prev, [field]: !prev[field] }));
   };
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setSubmitted(true);
-    setFormState(initialConnectState);
-    setVisibility({ apiKey: false, apiSecret: false });
+    if (!formState.apiKey || !formState.apiSecret) {
+      const message = 'API key and secret are required.';
+      setStatus({ type: 'error', message });
+      onConnectionLog?.({ status: 'error', message });
+      return;
+    }
+
+    setLoading(true);
+    setStatus({ type: 'idle', message: '' });
+
+    try {
+      const response = await fetch('/api/kraken/connect', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          apiKey: formState.apiKey,
+          apiSecret: formState.apiSecret,
+          validateOnly: true
+        })
+      });
+
+      const data = await response.json().catch(() => null);
+
+      if (!response.ok || data?.success === false) {
+        const message =
+          data?.message ||
+          (Array.isArray(data?.error) ? data.error.join(' | ') : null) ||
+          'Unable to validate credentials with Kraken.';
+        onConnectionLog?.({ status: 'error', message, details: data });
+        throw new Error(message);
+      }
+
+      const message = data?.message || 'Credentials validated with Kraken (no order executed).';
+      setStatus({
+        type: 'success',
+        message
+      });
+      onConnectionLog?.({ status: 'success', message, details: data?.result ?? null });
+      setFormState(initialConnectState);
+      setVisibility({ apiKey: false, apiSecret: false });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Unexpected error contacting Kraken.';
+      setStatus({ type: 'error', message });
+      onConnectionLog?.({ status: 'error', message, details: error instanceof Error ? error.stack : error });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -190,9 +243,13 @@ const ConnectForm = () => {
           </div>
         </div>
         <button className="cta-button" type="submit">
-          Secure Connect
+          {loading ? 'Connecting…' : 'Secure Connect'}
         </button>
-        {submitted && <p className="form-confirmation">Credentials received. We will guide you through the secure setup.</p>}
+        {status.type !== 'idle' && (
+          <p className={`form-confirmation${status.type === 'error' ? ' error' : ''}`} role="status">
+            {status.message}
+          </p>
+        )}
       </form>
     </div>
   );
