@@ -81,6 +81,9 @@ const UserAccountPage: FC<UserAccountPageProps> = ({ onNavigateHome, onLogout })
   const statusMenuRefs = useRef<Record<string, HTMLUListElement | null>>({});
   const statusOptions = useMemo<BotStatus[]>(() => ['Running', 'Paused', 'Stop', 'Delete'], []);
   const [connectionLogs, setConnectionLogs] = useState<ConnectionLogEntry[]>([]);
+  const handleClearConnectionLogs = useCallback(() => {
+    setConnectionLogs([]);
+  }, [setConnectionLogs]);
 
   const handleStatusMenuToggle = (botName: string) => () => {
     setOpenStatusMenu((current) => (current === botName ? null : botName));
@@ -290,9 +293,19 @@ const UserAccountPage: FC<UserAccountPageProps> = ({ onNavigateHome, onLogout })
         </section>
 
         <section className="user-panel card connection-panel" tabIndex={0} aria-live="polite">
-          <header className="user-panel-header">
-            <h2>Connection activity</h2>
-            <span className="user-panel-subtitle">Latest secure connect attempts across exchanges</span>
+          <header className="user-panel-header user-panel-header--with-actions">
+            <button
+              type="button"
+              className="connection-log-clear"
+              onClick={handleClearConnectionLogs}
+              disabled={connectionLogs.length === 0}
+            >
+              Clear activities
+            </button>
+            <div className="user-panel-header-stack">
+              <h2>Connection activity</h2>
+              <span className="user-panel-subtitle">Latest secure connect attempts across exchanges</span>
+            </div>
           </header>
           <ul className="connection-log-list">
             {connectionLogs.length === 0 && (
