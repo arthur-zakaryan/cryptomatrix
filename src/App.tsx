@@ -130,6 +130,10 @@ const App = () => {
     () => (isUserAuthenticated ? NAV_LINKS.filter((link) => link.id !== 'login') : NAV_LINKS),
     [isUserAuthenticated]
   );
+  const forcedOverflowIds = useMemo(
+    () => (isUserAuthenticated ? new Set<string>(['contact', 'forum']) : new Set<string>()),
+    [isUserAuthenticated]
+  );
 
   useEffect(() => {
     const handlePopstate = () => {
@@ -353,7 +357,7 @@ const App = () => {
       return;
     }
 
-    const minimumVisible = Math.min(MIN_VISIBLE_NAV_ITEMS, navLinks.length);
+    const minimumVisible = Math.min(isUserAuthenticated ? 1 : MIN_VISIBLE_NAV_ITEMS, navLinks.length);
 
     const computeVisibleCount = (availableWidth: number, gap: number) => {
       if (availableWidth <= 0) {
@@ -444,7 +448,7 @@ const App = () => {
       resizeObserver.disconnect();
       window.removeEventListener('resize', calculateOverflow);
     };
-  }, [isMobileView, isOverflowOpen, overflowStartIndex, navLinks]);
+  }, [isMobileView, isOverflowOpen, isUserAuthenticated, overflowStartIndex, navLinks]);
 
   useEffect(() => {
     if (!isOverflowOpen) {
@@ -476,8 +480,10 @@ const App = () => {
   }, [isOverflowOpen]);
 
   const visibleCount = Math.min(overflowStartIndex, navLinks.length);
-  const visibleNavItems = navLinks.slice(0, visibleCount);
-  const overflowNavItems = navLinks.slice(visibleCount);
+  const visibleNavItems = navLinks
+    .slice(0, visibleCount)
+    .filter((item) => !forcedOverflowIds.has(item.id));
+  const overflowNavItems = navLinks.filter((item, index) => index >= visibleCount || forcedOverflowIds.has(item.id));
   const overflowMenuId = 'nav-overflow-menu';
 
   measurementItemRefs.current.length = navLinks.length;
@@ -844,9 +850,11 @@ const App = () => {
               <a href="#exchanges">Exchanges</a>
               <a href="#algorithms">Algorithms</a>
               <a href="#connect">Connect</a>
+              <a href="/crypto-studio">Crypto Studio</a>
               <a href="#pricing">Pricing</a>
               <a href="#about">About</a>
               <a href="#contact">Contact</a>
+              <a href="/forum">Forum</a>
             </nav>
 
             <div className="footer-social">
