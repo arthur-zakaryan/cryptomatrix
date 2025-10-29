@@ -324,7 +324,8 @@ const App = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const shouldShowProfileShortcut = isUserAuthenticated && MARKETING_ROUTES.has(route);
+  const isMarketingRoute = MARKETING_ROUTES.has(route);
+  const shouldShowProfileShortcut = isUserAuthenticated && isMarketingRoute;
 
   const handleNavItemSelect = useCallback(
     (item: NavLinkConfig) => (event: MouseEvent<HTMLAnchorElement>) => {
@@ -350,6 +351,10 @@ const App = () => {
   );
 
   useLayoutEffect(() => {
+    if (!isMarketingRoute) {
+      return;
+    }
+
     if (!isMobileView) {
       if (overflowStartIndex !== navLinks.length) {
         setOverflowStartIndex(navLinks.length);
@@ -407,6 +412,13 @@ const App = () => {
       const baseVisibleCount = computeVisibleCount(currentNavNode.offsetWidth, gap);
 
       if (baseVisibleCount === navLinks.length) {
+        const fallbackVisibleCount = minimumVisible;
+        if (navLinks.length > fallbackVisibleCount) {
+          if (overflowStartIndex !== fallbackVisibleCount) {
+            setOverflowStartIndex(fallbackVisibleCount);
+          }
+          return;
+        }
         if (overflowStartIndex !== navLinks.length) {
           setOverflowStartIndex(navLinks.length);
         }
@@ -448,7 +460,7 @@ const App = () => {
       resizeObserver.disconnect();
       window.removeEventListener('resize', calculateOverflow);
     };
-  }, [isMobileView, isOverflowOpen, isUserAuthenticated, overflowStartIndex, navLinks]);
+  }, [isMarketingRoute, isMobileView, isOverflowOpen, isUserAuthenticated, overflowStartIndex, navLinks]);
 
   useEffect(() => {
     if (!isOverflowOpen) {
