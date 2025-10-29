@@ -3773,6 +3773,17 @@ button.signup-calendar-cell:disabled {
   gap: 0.8rem;
 }
 
+.connection-log-empty {
+  margin: 0;
+  padding: clamp(1rem, 2.5vw, 1.35rem);
+  border-radius: 16px;
+  border: 1px dashed rgba(145, 83, 195, 0.32);
+  background: rgba(18, 10, 42, 0.35);
+  color: rgba(203, 186, 255, 0.75);
+  text-align: center;
+  letter-spacing: 0.02em;
+}
+
 .connection-log-item {
   display: flex;
   flex-direction: column;

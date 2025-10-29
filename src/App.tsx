@@ -743,7 +743,7 @@ const App = () => {
         <section id="connect" className="connect-section">
           <h2 className="section-title gradient-text">Exchange Connection</h2>
           <p className="section-intro">Link exchange accounts with read and trade permissions to enable automated strategies</p>
-          <ConnectForm />
+          <ConnectForm showCredentialsForm={false} />
         </section>
 
         <section id="pricing" className="pricing-section">

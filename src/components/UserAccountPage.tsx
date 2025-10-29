@@ -289,32 +289,33 @@ const UserAccountPage: FC<UserAccountPageProps> = ({ onNavigateHome, onLogout })
           </aside>
         </section>
 
-        {connectionLogs.length > 0 && (
-          <section className="user-panel card connection-panel" tabIndex={0} aria-live="polite">
-            <header className="user-panel-header">
-              <h2>Connection activity</h2>
-              <span className="user-panel-subtitle">Latest secure connect attempts across exchanges</span>
-            </header>
-            <ul className="connection-log-list">
-              {connectionLogs.map((log) => (
-                <li key={log.id} className={`connection-log-item connection-log-item--${log.status}`}>
-                  <div className="connection-log-item-header">
-                    <span className={`connection-log-status connection-log-status--${log.status}`}>
-                      {log.status === 'success' ? 'Validated' : 'Failed'}
-                    </span>
-                    <span className="connection-log-entry-time">{log.timestamp}</span>
-                  </div>
-                  <p className="connection-log-entry-message">{log.message}</p>
-                  {log.details && (
-                    <pre className="connection-log-details">
-                      {log.details}
-                    </pre>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </section>
-        )}
+        <section className="user-panel card connection-panel" tabIndex={0} aria-live="polite">
+          <header className="user-panel-header">
+            <h2>Connection activity</h2>
+            <span className="user-panel-subtitle">Latest secure connect attempts across exchanges</span>
+          </header>
+          <ul className="connection-log-list">
+            {connectionLogs.length === 0 && (
+              <li className="connection-log-empty">No account is connected.</li>
+            )}
+            {connectionLogs.map((log) => (
+              <li key={log.id} className={`connection-log-item connection-log-item--${log.status}`}>
+                <div className="connection-log-item-header">
+                  <span className={`connection-log-status connection-log-status--${log.status}`}>
+                    {log.status === 'success' ? 'Validated' : 'Failed'}
+                  </span>
+                  <span className="connection-log-entry-time">{log.timestamp}</span>
+                </div>
+                <p className="connection-log-entry-message">{log.message}</p>
+                {log.details && (
+                  <pre className="connection-log-details">
+                    {log.details}
+                  </pre>
+                )}
+              </li>
+            ))}
+          </ul>
+        </section>
       </main>
     </div>
   );

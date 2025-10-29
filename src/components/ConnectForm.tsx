@@ -12,6 +12,7 @@ const initialConnectState: ConnectFormState = {
 
 type ConnectFormProps = {
   onConnectionLog?: (entry: { status: 'success' | 'error'; message: string; details?: unknown }) => void;
+  showCredentialsForm?: boolean;
 };
 
 const ShieldIcon = () => (
@@ -110,7 +111,7 @@ const connectHighlights = [
   }
 ];
 
-const ConnectForm = ({ onConnectionLog }: ConnectFormProps) => {
+const ConnectForm = ({ onConnectionLog, showCredentialsForm = true }: ConnectFormProps) => {
   const [formState, setFormState] = useState(initialConnectState);
   const [status, setStatus] = useState<{ type: 'idle' | 'success' | 'error'; message: string }>({
     type: 'idle',
@@ -185,7 +186,11 @@ const ConnectForm = ({ onConnectionLog }: ConnectFormProps) => {
   return (
     <div className="card connect-card" tabIndex={0}>
       <h3>Connect Your Exchange</h3>
-      <p className="card-intro">Enter your API credentials to link an exchange account</p>
+      <p className="card-intro">
+        {showCredentialsForm
+          ? 'Enter your API credentials to link an exchange account'
+          : 'Secure, encrypted exchange connectivity built for automated strategies'}
+      </p>
       <ul className="connect-highlights">
         {connectHighlights.map(({ title, copy, Icon }) => (
           <li key={title} className="connect-highlight" tabIndex={0}>
@@ -199,60 +204,62 @@ const ConnectForm = ({ onConnectionLog }: ConnectFormProps) => {
           </li>
         ))}
       </ul>
-      <form className="connect-form" onSubmit={handleSubmit}>
-        <div className="form-field">
-          <label htmlFor="apiKey">API Key</label>
-          <div className="input-with-toggle">
-            <input
-              id="apiKey"
-              name="apiKey"
-              type={visibility.apiKey ? 'text' : 'password'}
-              value={formState.apiKey}
-              onChange={handleChange('apiKey')}
-              placeholder="Paste your API key"
-              required
-            />
-            <button
-              type="button"
-              className="visibility-toggle"
-              onClick={toggleVisibility('apiKey')}
-              aria-label={visibility.apiKey ? 'Hide API key' : 'Show API key'}
-            >
-              {visibility.apiKey ? <EyeOffIcon /> : <EyeIcon />}
-            </button>
+      {showCredentialsForm && (
+        <form className="connect-form" onSubmit={handleSubmit}>
+          <div className="form-field">
+            <label htmlFor="apiKey">API Key</label>
+            <div className="input-with-toggle">
+              <input
+                id="apiKey"
+                name="apiKey"
+                type={visibility.apiKey ? 'text' : 'password'}
+                value={formState.apiKey}
+                onChange={handleChange('apiKey')}
+                placeholder="Paste your API key"
+                required
+              />
+              <button
+                type="button"
+                className="visibility-toggle"
+                onClick={toggleVisibility('apiKey')}
+                aria-label={visibility.apiKey ? 'Hide API key' : 'Show API key'}
+              >
+                {visibility.apiKey ? <EyeOffIcon /> : <EyeIcon />}
+              </button>
+            </div>
           </div>
-        </div>
-        <div className="form-field">
-          <label htmlFor="apiSecret">API Secret</label>
-          <div className="input-with-toggle">
-            <input
-              id="apiSecret"
-              name="apiSecret"
-              type={visibility.apiSecret ? 'text' : 'password'}
-              value={formState.apiSecret}
-              onChange={handleChange('apiSecret')}
-              placeholder="Paste your API secret"
-              required
-            />
-            <button
-              type="button"
-              className="visibility-toggle"
-              onClick={toggleVisibility('apiSecret')}
-              aria-label={visibility.apiSecret ? 'Hide API secret' : 'Show API secret'}
-            >
-              {visibility.apiSecret ? <EyeOffIcon /> : <EyeIcon />}
-            </button>
+          <div className="form-field">
+            <label htmlFor="apiSecret">API Secret</label>
+            <div className="input-with-toggle">
+              <input
+                id="apiSecret"
+                name="apiSecret"
+                type={visibility.apiSecret ? 'text' : 'password'}
+                value={formState.apiSecret}
+                onChange={handleChange('apiSecret')}
+                placeholder="Paste your API secret"
+                required
+              />
+              <button
+                type="button"
+                className="visibility-toggle"
+                onClick={toggleVisibility('apiSecret')}
+                aria-label={visibility.apiSecret ? 'Hide API secret' : 'Show API secret'}
+              >
+                {visibility.apiSecret ? <EyeOffIcon /> : <EyeIcon />}
+              </button>
+            </div>
           </div>
-        </div>
-        <button className="cta-button" type="submit">
-          {loading ? 'Connecting…' : 'Secure Connect'}
-        </button>
-        {status.type !== 'idle' && (
-          <p className={`form-confirmation${status.type === 'error' ? ' error' : ''}`} role="status">
-            {status.message}
-          </p>
-        )}
-      </form>
+          <button className="cta-button" type="submit">
+            {loading ? 'Connecting…' : 'Secure Connect'}
+          </button>
+          {status.type !== 'idle' && (
+            <p className={`form-confirmation${status.type === 'error' ? ' error' : ''}`} role="status">
+              {status.message}
+            </p>
+          )}
+        </form>
+      )}
     </div>
   );
 };
